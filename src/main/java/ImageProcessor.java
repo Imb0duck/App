@@ -2,8 +2,7 @@ import org.imgscalr.Scalr;
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 
 public class ImageProcessor {
     private static PCords findTopLeftNonEmptyPixel(BufferedImage image){
@@ -82,23 +81,29 @@ public class ImageProcessor {
         return Scalr.resize(image, 64,63);
     }
 
-    private static byte[] getPixelsArray(BufferedImage image){
+    private static byte[] getPixelsArray(BufferedImage image) throws IOException {
+        File output_file = new File( "image.png");
+        ImageIO.write(image, "png", output_file);
         byte [] pixelsArray = new byte[64*63/2];
-        int i = -2;
+        int i = 0;
         while(i < 64*63) {
-            byte white1 = (byte) (((image.getRGB(i%64, i/64) & 0xFF) / 16 + 1) & 0xF0);
+            byte white1 =(byte) ((image.getRGB(i%64, i/64) & 0xFF) / 16);
             i++;
-            byte white2 = (byte) ((((image.getRGB(i%64, i/64) & 0xFF) / 16 + 1) >> 4) & 0x0F);
+            byte white2 = (byte) (((image.getRGB(i%64, i/64) & 0xFF) / 16) << 4);
             i++;
-            pixelsArray[i/2] = 0;
-            pixelsArray[i/2] = (byte) (white1 | white2);
+            pixelsArray[(i-2)/2] = (byte) (white1 | white2);
         }
         return pixelsArray;
     }
     public static void processImage(BufferedImage image) throws  EmptyImageException, IOException {
-        getPixelsArray(compressImage(rectangleImageToSquare(image)));
+        ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream("arrayfile"));
+        outputStream.writeObject(getPixelsArray(compressImage(rectangleImageToSquare(image))));
     }
 
+    public static void main(String[] args) throws IOException, EmptyImageException {
+        File file = new File("C:/Users/btlll/IdeaProjects/App/src/main/java/saves/image.png");
+        processImage(ImageIO.read(file));
+    }
     private static class PCords{
         private int x;
         private int y;
