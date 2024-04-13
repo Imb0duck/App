@@ -27,7 +27,7 @@ public class ImageProcessor {
                 }
             }
         }
-        return new PCords(xVal, yVal);
+        return new PCords(xVal-75, yVal-75);
     }
     private static PCords findBottomRightNonEmptyPixel(BufferedImage image){
         int xVal = -1, yVal = -1;
@@ -51,7 +51,7 @@ public class ImageProcessor {
                 }
             }
         }
-        return new PCords(xVal, yVal);
+        return new PCords(xVal+75, yVal+75);
     }
     private static BufferedImage cropEmptySpace(BufferedImage image, PCords topLeft, PCords bottomRight){
         return image.getSubimage(topLeft.x,topLeft.y,bottomRight.x-topLeft.x,bottomRight.y-topLeft.y);
@@ -81,12 +81,14 @@ public class ImageProcessor {
         return Scalr.resize(image, 64,63);
     }
 
-    private static byte[] getPixelsArray(BufferedImage image) {
+    private static byte[] getPixelsArray(BufferedImage image) throws IOException {
+        File outputfile = new File("image.jpg");
+        ImageIO.write(image, "jpg", outputfile);
         byte [] pixelsArray = new byte[64*63/2];
         for (int y = 0; y < 63; y++){
             for (int x = 0; x < 64; x+=2){
-                byte white1 =(byte) (((image.getRGB(x, y) & 0xFF) / 16)  << 4);
-                byte white2 = (byte) ((image.getRGB(x+1, y) & 0xFF) / 16);
+                byte white1 =(byte) (((image.getRGB(x, y) & 0xFF) / 128 * 15)  << 4);
+                byte white2 = (byte) ((image.getRGB(x+1, y) & 0xFF) / 128 * 15);
                 pixelsArray[y*32+x/2] = (byte) (white1 | white2);
             }
         }
@@ -103,8 +105,7 @@ public class ImageProcessor {
             while ((line = reader.readLine()) != null) {
                 output.append(line).append("\n");
             }
-            int exit_code = process.waitFor();
-            System.out.println(exit_code);
+            process.waitFor();
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
             throw new RuntimeException(e);
