@@ -134,7 +134,7 @@ public class ImageEdit
                           Graphics2D g2 = imag.createGraphics();
                           g2.setColor(maincolor);
                           
-                          g2.setStroke(new  BasicStroke(10.0f));
+                          g2.setStroke(new  BasicStroke(25.0f));
                           g2.drawLine(xPad, yPad, e.getX(), e.getY());
                       
                           xPad=e.getX();
