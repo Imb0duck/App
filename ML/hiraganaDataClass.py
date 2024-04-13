@@ -30,8 +30,8 @@ class Data(Dataset):
         low_bits = data[:, 33:2049] & 0x0F
         
         # Normalize high and low bits using vectorized operations
-        high_bits = np.where(high_bits > threshold, 15, 0)
-        low_bits = np.where(low_bits > threshold, 15, 0)
+        high_bits = np.where(high_bits > threshold, 0, 15)
+        low_bits = np.where(low_bits > threshold, 0, 15)
         
         # Pack the high and low bits back into one byte
         normalized_data = (high_bits << 4) | low_bits

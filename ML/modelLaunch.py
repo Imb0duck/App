@@ -1,29 +1,39 @@
 import torch
 from HiraganaModelClass import HiraganaCNN
-import time
 import psutil
-
-import torch
+import numpy as np
 from labels import reversed_labels_list
+import sys
 
 
-def get_label(image):
+def get_label():
+    image_path = sys.argv[1]
     MODEL_PATH = 'models/Hiragana.pth'
     model = HiraganaCNN(num_classes=48)
     model.load_state_dict(torch.load(MODEL_PATH))
     model.eval()
-    #tart = time.time()
 
-    outputs = model(image)
+    with open(image_path, 'rb') as file:
+        image_bytes = file.read()
+    image_bytes = np.frombuffer(image_bytes, dtype=np.uint8)
+
+    high_bits = image_bytes >> 4  # Extracts the high 4 bits of each byte
+    low_bits = image_bytes & 0x0F  # Extracts the low 4 bits of each byte
+
+    # Concatenate the high and low bits arrays to get a single array of 4-bit values
+    pixels = np.empty(high_bits.size + low_bits.size, dtype=high_bits.dtype)
+    pixels[0::2], pixels[1::2] = high_bits, low_bits
+    pixels = pixels.astype(np.float32).reshape(1, 63, 64)
+
+    outputs = model(torch.tensor(pixels, dtype=torch.float32))
 
     _, prediction = torch.max(outputs, 1)
     print(f'prediction = {reversed_labels_list[prediction]}')
-    #end = time.time()
-    #print("Execution time:", end - start, "seconds")
+
     return prediction
 
 
-if __name__ == "__main__":  ##
+if __name__ == "__main__":
     image = torch.load("array1.pt")
 
     get_label(image)
