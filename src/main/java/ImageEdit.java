@@ -76,7 +76,7 @@ public class ImageEdit
         toolbar.add(outputTextArea);
            
           JButton backbutton = new  JButton();
-          URL backIconUrl = getClass().getResource("/resources/back.png");
+          URL backIconUrl = getClass().getResource("/back.png");
           if (backIconUrl != null) {
             ImageIcon backIcon = new ImageIcon(backIconUrl);
             backbutton.setIcon(backIcon);
@@ -101,7 +101,7 @@ public class ImageEdit
           toolbar.add(backbutton);
 
           JButton pushresult = new  JButton();
-          URL pushresultIconUrl = getClass().getResource("/resources/pushresult.png");
+          URL pushresultIconUrl = getClass().getResource("/pushresult.png");
           if (pushresultIconUrl != null) {
             ImageIcon pushresultIcon = new ImageIcon(pushresultIconUrl);
             pushresult.setIcon(pushresultIcon);
@@ -111,7 +111,7 @@ public class ImageEdit
             {
               public void actionPerformed(ActionEvent event)
               {
-                //String processedPixels = ImageProcessor.processImage(imag);                 
+                String processedPixels = ImageProcessor.processImage(imag);
                 outputTextArea.append("processedPixels");
 
                 clearImage();
