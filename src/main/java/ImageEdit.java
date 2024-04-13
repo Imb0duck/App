@@ -4,10 +4,9 @@ import  java.io.*;
 import  javax.swing.*;
 import  java.awt.image.*;
 import  javax.imageio.*;
-import  javax.swing.filechooser.FileFilter;
 import  java.util.Stack;
 import  java.net.URL;
- 
+
 public class ImageEdit
 {
     int  xPad;
@@ -63,15 +62,21 @@ public class ImageEdit
         fileMenu.add(saveasMenu);*/
          
         japan = new  MyPanel();
-        japan.setBounds(0,30,256,256); //кривые границы
+        japan.setBounds(0,30,256,256);
         japan.setBackground(Color.white);
         japan.setOpaque(true);
         f.add(japan);
-         
+      
         JToolBar toolbar = new  JToolBar("Toolbar", JToolBar.HORIZONTAL);
+
+        JTextArea outputTextArea = new JTextArea();
+        outputTextArea.setEditable(false);
+        //outputTextArea.setLineWrap(true);
+        //JScrollPane scrollPane = new JScrollPane(outputTextArea);
+        toolbar.add(outputTextArea);
            
           JButton backbutton = new  JButton();
-          URL backIconUrl = getClass().getResource("/back.png");
+          URL backIconUrl = getClass().getResource("/resources/back.png");
           if (backIconUrl != null) {
             ImageIcon backIcon = new ImageIcon(backIconUrl);
             backbutton.setIcon(backIcon);
@@ -86,12 +91,17 @@ public class ImageEdit
                   imag = previousImage;
                   japan.repaint();
               }
+              else
+              {
+                clearImage();
               }
+              }
+
             });
           toolbar.add(backbutton);
 
           JButton pushresult = new  JButton();
-          URL pushresultIconUrl = getClass().getResource("/pushresult.png");
+          URL pushresultIconUrl = getClass().getResource("/resources/pushresult.png");
           if (pushresultIconUrl != null) {
             ImageIcon pushresultIcon = new ImageIcon(pushresultIconUrl);
             pushresult.setIcon(pushresultIcon);
@@ -100,50 +110,14 @@ public class ImageEdit
           pushresult.addActionListener(new  ActionListener()
             {
               public void actionPerformed(ActionEvent event)
-              { 
-                try
-               {
-               String currentDir = System.getProperty("user.dir");
-               String saveDirPath = currentDir + File.separator + "src/saves";
-               File saveDir = new File(saveDirPath);
-               if (!saveDir.exists() || !saveDir.isDirectory()) {
-                 JOptionPane.showMessageDialog(f, "Директория сохранения не найдена");
-                 return;
-                 }
+              {
+                //String processedPixels = ImageProcessor.processImage(imag);                 
+                outputTextArea.append("processedPixels");
 
-                 saveImageAsPNG(new File(saveDir, "image.png"));
-                 saveImageAsJPEG(new File(saveDir, "image.jpg"));
-                 clearImage();
-
-                 }
-                catch(IOException ex)
-                {
-                 JOptionPane.showMessageDialog(f, "Ошибка ввода-вывода");
-                }
+                clearImage();
+                history.clear();
               }
-
-            //PNG
-            private void saveImageAsPNG(File file) throws IOException {
-              ImageIO.write(imag, "png", file);
-            }
-            
-            //JPEG
-            private void saveImageAsJPEG(File file) throws IOException {
-              BufferedImage copy = new BufferedImage(imag.getWidth(), imag.getHeight(), BufferedImage.TYPE_INT_RGB);
-              Graphics2D g2d = copy.createGraphics();
-              g2d.drawImage(imag, 0, 0, null);
-              g2d.dispose();
-              ImageIO.write(copy, "jpeg", file);
-            }
-
-            private void clearImage() {
-              Graphics2D g2 = imag.createGraphics();
-              g2.setColor(Color.white);
-              g2.fillRect(0, 0, imag.getWidth(), imag.getHeight());
-              g2.dispose();
-              japan.repaint();
-            }
-            
+    
           });
           toolbar.add(pushresult);
            
@@ -160,13 +134,14 @@ public class ImageEdit
                           Graphics2D g2 = imag.createGraphics();
                           g2.setColor(maincolor);
                           
-                          g2.setStroke(new  BasicStroke(3.0f));
+                          g2.setStroke(new  BasicStroke(10.0f));
                           g2.drawLine(xPad, yPad, e.getX(), e.getY());
                       
                           xPad=e.getX();
                           yPad=e.getY();
                           g2.dispose();
                           japan.repaint();
+
                           }
                       }
                   });
@@ -175,7 +150,7 @@ public class ImageEdit
                      public void mouseClicked(MouseEvent e) {
                            
                      //Graphics g = imag.getGraphics();
-                     Graphics2D g2 = imag.createGraphics();
+                     /*Graphics2D g2 = imag.createGraphics();
                      
                           g2.setColor(maincolor);
                           
@@ -183,28 +158,34 @@ public class ImageEdit
                           g2.drawLine(xPad, yPad, xPad+1, yPad+1);
                           
                           xPad=e.getX();
-                          yPad=e.getY();
+                          yPad=e.getY();*/
                            
                           pressed=true;
                           japan.repaint();
 
-                          BufferedImage currentImageCopy = deepCopy(imag);
-                          history.push(currentImageCopy);
                    }
-                     public void mousePressed(MouseEvent e) {
+                      public void mousePressed(MouseEvent e) {
                          xPad=e.getX();
                           yPad=e.getY();
                           xf=e.getX();
                           yf=e.getY();
                           pressed=true;
                         }
+
+                      public void mouseReleased(MouseEvent e) {
+                          if (pressed) {
+                              BufferedImage currentImageCopy = deepCopy(imag);
+                              history.push(currentImageCopy);
+                              pressed = false;
+                          }
+                      }
                     
                   });
                   
         f.addComponentListener(new  ComponentAdapter() {
                 public void componentResized(java.awt.event.ComponentEvent evt) {
                   
-                    japan.setSize(f.getWidth()-40, f.getHeight()-80);
+                    japan.setSize(f.getWidth(), f.getHeight()-80);
                     BufferedImage tempImage = new  BufferedImage(japan.getWidth(), japan.getHeight(), BufferedImage.TYPE_INT_RGB);
                              Graphics2D d2 = (Graphics2D) tempImage.createGraphics();
                         d2.setColor(Color.white);
@@ -233,6 +214,14 @@ public class ImageEdit
       boolean isAlphaPremultiplied = colorModel.isAlphaPremultiplied();
       WritableRaster raster = image.copyData(null);
       return new BufferedImage(colorModel, raster, isAlphaPremultiplied, null);
+    }
+
+    private void clearImage() {
+      Graphics2D g2 = imag.createGraphics();
+      g2.setColor(Color.white);
+      g2.fillRect(0, 0, imag.getWidth(), imag.getHeight());
+      g2.dispose();
+      japan.repaint();
     }
   
      class MyFrame extends JFrame
@@ -265,26 +254,8 @@ public class ImageEdit
                  d2.fillRect(0, 0, imag.getWidth(), imag.getHeight());
              }
 
-             
              g.drawImage(imag, 0, 0, getWidth(), getHeight(), null);      
           }
      }
      
-     class TextFileFilter extends FileFilter 
-     {
-         private String ext;
-         public TextFileFilter(String ext)
-         {
-             this.ext=ext;
-         }
-         public boolean accept(java.io.File file) 
-         {
-              if (file.isDirectory()) return true;
-              return (file.getName().endsWith(ext));
-         }
-         public String getDescription() 
-         {
-              return "*"+ext;
-         }
-     }
 }
