@@ -78,14 +78,14 @@ public class ImageProcessor {
         }
         return expandEmptySpace(cropEmptySpace(image, topLeft, bottomRight), topLeft, bottomRight);
     }
-    public static BufferedImage compressImage(BufferedImage image){
+    private static BufferedImage compressImage(BufferedImage image){
         return Scalr.resize(image, 63,64);
     }
 
-    public static int[] getPixelsArray(BufferedImage image){
+    private static int[] getPixelsArray(BufferedImage image){
         int [] pixelsArray = new int[63*64];
-        for (int x = 0; x < image.getWidth(); x++) {
-            for (int y = 0; y < image.getHeight(); y++) {
+        for (int y = 0; y < image.getHeight(); y++) {
+            for (int x = 0; x < image.getWidth(); x++) {
                 int white = image.getRGB(x, y) & 0xFF;
                 pixelsArray[y * (image.getHeight()-1) + x] = white/16+1;
             }
