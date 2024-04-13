@@ -79,21 +79,24 @@ public class ImageProcessor {
         return expandEmptySpace(cropEmptySpace(image, topLeft, bottomRight), topLeft, bottomRight);
     }
     private static BufferedImage compressImage(BufferedImage image){
-        return Scalr.resize(image, 63,64);
+        return Scalr.resize(image, 64,63);
     }
 
-    private static int[] getPixelsArray(BufferedImage image){
-        int [] pixelsArray = new int[63*64];
-        for (int y = 0; y < image.getHeight(); y++) {
-            for (int x = 0; x < image.getWidth(); x++) {
-                int white = image.getRGB(x, y) & 0xFF;
-                pixelsArray[y * (image.getHeight()-1) + x] = white/16+1;
-            }
+    private static byte[] getPixelsArray(BufferedImage image){
+        byte [] pixelsArray = new byte[64*63/2];
+        int i = -2;
+        while(i < 64*63) {
+            byte white1 = (byte) (((image.getRGB(i%64, i/64) & 0xFF) / 16 + 1) & 0xF0);
+            i++;
+            byte white2 = (byte) ((((image.getRGB(i%64, i/64) & 0xFF) / 16 + 1) >> 4) & 0x0F);
+            i++;
+            pixelsArray[i/2] = 0;
+            pixelsArray[i/2] = (byte) (white1 | white2);
         }
         return pixelsArray;
     }
-    public static int[] processImage(BufferedImage image) throws  EmptyImageException, IOException {
-        return getPixelsArray(compressImage(rectangleImageToSquare(image)));
+    public static void processImage(BufferedImage image) throws  EmptyImageException, IOException {
+        getPixelsArray(compressImage(rectangleImageToSquare(image)));
     }
 
     private static class PCords{
