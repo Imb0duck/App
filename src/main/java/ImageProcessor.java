@@ -81,7 +81,7 @@ public class ImageProcessor {
         return Scalr.resize(image, 64,63);
     }
 
-    private static byte[] getPixelsArray(BufferedImage image) throws IOException {
+    private static byte[] getPixelsArray(BufferedImage image) {
         byte [] pixelsArray = new byte[64*63/2];
         for (int y = 0; y < 63; y++){
             for (int x = 0; x < 64; x+=2){
@@ -92,22 +92,33 @@ public class ImageProcessor {
         }
         return pixelsArray;
     }
-    private static String launchNeuro() throws InterruptedException, IOException {
-        ProcessBuilder processBuilder = new ProcessBuilder("python", "ML/modelLaunch.py", "src/main/java/saves/neuroinput");
-        Process process = processBuilder.start();
-        BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-        StringBuilder output = new StringBuilder();
-        String line;
-        while ((line = reader.readLine()) != null) {
-            output.append(line).append("\n");
+    private static String launchNeuro() {
+        StringBuilder output;
+        try {
+            ProcessBuilder processBuilder = new ProcessBuilder("python", "ML/modelLaunch.py", "src/main/java/saves/neuroinput");
+            Process process = processBuilder.start();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+            output = new StringBuilder();
+            String line;
+            while ((line = reader.readLine()) != null) {
+                output.append(line).append("\n");
+            }
+            process.waitFor();
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
         }
-        int exitCode = process.waitFor();
         return output.toString();
     }
 
-    public static String processImage(BufferedImage image) throws EmptyImageException, IOException, InterruptedException {
-        ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream("src/main/java/saves/neuroinput"));
-        outputStream.writeObject(getPixelsArray(compressImage(rectangleImageToSquare(image))));
+    public static String processImage(BufferedImage image) {
+        try {
+            ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream("src/main/java/saves/neuroinput"));
+            outputStream.writeObject(getPixelsArray(compressImage(rectangleImageToSquare(image))));
+        } catch (IOException | EmptyImageException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
         return launchNeuro();
     }
 
