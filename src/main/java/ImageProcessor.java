@@ -82,16 +82,15 @@ public class ImageProcessor {
     }
 
     private static byte[] getPixelsArray(BufferedImage image) throws IOException {
-        File output_file = new File( "image.png");
-        ImageIO.write(image, "png", output_file);
+        //File output_file = new File( "image.png");
+        //ImageIO.write(image, "png", output_file);
         byte [] pixelsArray = new byte[64*63/2];
-        int i = 0;
-        while(i < 64*63) {
-            byte white1 =(byte) ((image.getRGB(i%64, i/64) & 0xFF) / 16);
-            i++;
-            byte white2 = (byte) (((image.getRGB(i%64, i/64) & 0xFF) / 16) << 4);
-            i++;
-            pixelsArray[(i-2)/2] = (byte) (white1 | white2);
+        for (int y = 0; y < 63; y++){
+            for (int x = 0; x < 64; x+=2){
+                byte white1 =(byte) (((image.getRGB(x, y) & 0xFF) / 16)  << 4);
+                byte white2 = (byte) ((image.getRGB(x+1, y) & 0xFF) / 16);
+                pixelsArray[y*64+x] = (byte) (white1 | white2);
+            }
         }
         return pixelsArray;
     }
