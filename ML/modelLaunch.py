@@ -28,9 +28,9 @@ def get_label():
     outputs = model(torch.tensor(pixels, dtype=torch.float32))
 
     _, prediction = torch.max(outputs, 1)
-    print(f'prediction = {reversed_labels_list[prediction]}')
+    #print(f'prediction = {reversed_labels_list[prediction]}')
 
-    print(prediction)
+    print(reversed_labels_list[prediction])
 
 
 if __name__ == "__main__":
