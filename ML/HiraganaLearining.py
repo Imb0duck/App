@@ -32,10 +32,10 @@ samples,labels = next(example)
 
 
 model = HiraganaCNN(num_classes= n_classes).to(device)
-learning_rate = 0.001
+learning_rate = 0.0005
 criterion = nn.CrossEntropyLoss()
 optimizer = torch.optim.Adam(model.parameters(), lr = learning_rate)
-n_epochs = 5
+n_epochs = 6
 n_batches = len(trainData)/batch_size
 
 for epoch in range(n_epochs):
