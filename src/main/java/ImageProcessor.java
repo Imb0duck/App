@@ -82,8 +82,6 @@ public class ImageProcessor {
     }
 
     private static byte[] getPixelsArray(BufferedImage image) throws IOException {
-        //File output_file = new File( "image.png");
-        //ImageIO.write(image, "png", output_file);
         byte [] pixelsArray = new byte[64*63/2];
         for (int y = 0; y < 63; y++){
             for (int x = 0; x < 64; x+=2){
@@ -94,12 +92,26 @@ public class ImageProcessor {
         }
         return pixelsArray;
     }
-    public static void processImage(BufferedImage image) throws  EmptyImageException, IOException {
-        ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream("src/main/java/saves/neuroinput"));
-        outputStream.writeObject(getPixelsArray(compressImage(rectangleImageToSquare(image))));
+    private static String launchNeuro() throws InterruptedException, IOException {
+        ProcessBuilder processBuilder = new ProcessBuilder("python", "ML/modelLaunch.py", "src/main/java/saves/neuroinput");
+        Process process = processBuilder.start();
+        BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+        StringBuilder output = new StringBuilder();
+        String line;
+        while ((line = reader.readLine()) != null) {
+            output.append(line).append("\n");
+        }
+        int exitCode = process.waitFor();
+        return output.toString();
     }
 
-    public static void main(String[] args) throws IOException, EmptyImageException {
+    public static String processImage(BufferedImage image) throws EmptyImageException, IOException, InterruptedException {
+        ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream("src/main/java/saves/neuroinput"));
+        outputStream.writeObject(getPixelsArray(compressImage(rectangleImageToSquare(image))));
+        return launchNeuro();
+    }
+
+    public static void main(String[] args) throws IOException, EmptyImageException, InterruptedException {
         File file = new File("C:/Users/btlll/IdeaProjects/App/src/main/java/saves/image.png");
         processImage(ImageIO.read(file));
     }
