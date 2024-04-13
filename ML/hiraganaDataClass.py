@@ -24,7 +24,7 @@ class Data(Dataset):
         
     
     @staticmethod
-    def normalize_data(data, threshold=6):
+    def normalize_data(data, threshold=7):
         # Extract the high and low 4-bit numbers from the entire data array
         high_bits = (data[:, 33:2049] >> 4) & 0x0F
         low_bits = data[:, 33:2049] & 0x0F

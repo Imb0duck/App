@@ -69,7 +69,7 @@ with torch.no_grad():
         _, predictions = torch.max(outputs,1)
         n_samples += labels.shape[0]
         n_correct += (predictions == labels).sum().item()
-        #print(n_samples,n_correct, predictions.shape, labels.shape)
+        print(n_samples,n_correct, predictions.shape, labels.shape)
     acc = n_correct/n_samples
     print(f'total accuracy = {acc}')
 
