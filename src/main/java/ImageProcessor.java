@@ -96,7 +96,7 @@ public class ImageProcessor {
         return pixelsArray;
     }
     public static void processImage(BufferedImage image) throws  EmptyImageException, IOException {
-        ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream("arrayfile"));
+        ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream("src/main/java/saves/neuroinput"));
         outputStream.writeObject(getPixelsArray(compressImage(rectangleImageToSquare(image))));
     }
 
