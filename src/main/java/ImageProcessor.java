@@ -89,7 +89,7 @@ public class ImageProcessor {
             for (int x = 0; x < 64; x+=2){
                 byte white1 =(byte) (((image.getRGB(x, y) & 0xFF) / 16)  << 4);
                 byte white2 = (byte) ((image.getRGB(x+1, y) & 0xFF) / 16);
-                pixelsArray[y*64+x] = (byte) (white1 | white2);
+                pixelsArray[y*32+x/2] = (byte) (white1 | white2);
             }
         }
         return pixelsArray;
