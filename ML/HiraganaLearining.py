@@ -1,14 +1,6 @@
-#MNIST
-#DataLoader, Transformation
-#Multilayer net, activation
-#Loss and optim
-#Training loop
-#Model evaluation
-#GPU support
 from labels import reversed_labels_list
 import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import MinMaxScaler
 import torch
 import torch.nn as nn
 from torch.utils.data import DataLoader
@@ -33,7 +25,7 @@ batch_size = 100
 n_hidden = 100
 #print(digitData.xy.shape)
 train_loader = DataLoader(dataset=trainData,batch_size= batch_size, shuffle=True)
-test_loader = DataLoader(dataset=testData,batch_size= batch_size, shuffle=False)
+test_loader = DataLoader(dataset=testData,batch_size= batch_size, shuffle=True)
 
 example = iter(train_loader)
 samples,labels = next(example)
@@ -82,7 +74,7 @@ with torch.no_grad():
     print(f'total accuracy = {acc}')
 
 PATH = 'models/Hiragana.pth'
-torch.save(model.state_dict(), PATH)
+#torch.save(model.state_dict(), PATH)
 
 example = iter(test_loader)
 samples,labels = next(example)
