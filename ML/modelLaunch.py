@@ -31,19 +31,5 @@ def get_label():
     outputs = model(pixels_tensor)
 
     _, prediction = torch.max(outputs, 1)
-    #print(f'prediction = {reversed_labels_list[prediction]}')
 
-    print(prediction)
-
-
-if __name__ == "__main__":
-
-    get_label()
-
-    # Get system resource usage
-    process = psutil.Process()
-    memory_usage = process.memory_info().rss / (1024 ** 2)  # Memory usage in MB
-    cpu_usage = process.cpu_percent(interval=1)  # CPU usage in percentage
-
-    print("Memory usage:", memory_usage, "MB")
-    print("CPU usage:", cpu_usage, "%")
+    print(reversed_labels_list[prediction])
