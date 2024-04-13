@@ -30,7 +30,7 @@ def get_label():
     _, prediction = torch.max(outputs, 1)
     print(f'prediction = {reversed_labels_list[prediction]}')
 
-    return prediction
+    print(prediction)
 
 
 if __name__ == "__main__":
