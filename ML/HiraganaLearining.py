@@ -74,7 +74,7 @@ with torch.no_grad():
     print(f'total accuracy = {acc}')
 
 PATH = 'models/Hiragana.pth'
-#torch.save(model.state_dict(), PATH)
+torch.save(model.state_dict(), PATH)
 
 example = iter(test_loader)
 samples,labels = next(example)
