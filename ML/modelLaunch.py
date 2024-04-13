@@ -4,13 +4,14 @@ import psutil
 import numpy as np
 from labels import reversed_labels_list
 import sys
+import matplotlib.pyplot as plt
 
 
 def get_label():
     image_path = sys.argv[1]
-    MODEL_PATH = 'models/Hiragana.pth'
+    MODEL_PATH = 'Ml/models/Hiragana.pth'
     model = HiraganaCNN(num_classes=48)
-    model.load_state_dict(torch.load(MODEL_PATH))
+    model.load_state_dict(torch.load(MODEL_PATH,map_location=torch.device('cpu')))
     model.eval()
 
     with open(image_path, 'rb') as file:
@@ -24,24 +25,25 @@ def get_label():
     pixels = np.empty(high_bits.size + low_bits.size, dtype=high_bits.dtype)
     pixels[0::2], pixels[1::2] = high_bits, low_bits
     pixels = pixels.astype(np.float32).reshape(1, 63, 64)
+    plt.imshow(pixels[0], cmap = 'gray')
+    plt.show()
 
     outputs = model(torch.tensor(pixels, dtype=torch.float32))
 
     _, prediction = torch.max(outputs, 1)
-    #print(f'prediction = {reversed_labels_list[prediction]}')
+    print(f'prediction = {reversed_labels_list[prediction]}')
 
-    print(reversed_labels_list[prediction])
+    print(prediction)
 
 
-# if __name__ == "__main__":
-#     image = torch.load("array1.pt")
-#
-#     get_label(image)
-#
-#     # Get system resource usage
-#     process = psutil.Process()
-#     memory_usage = process.memory_info().rss / (1024 ** 2)  # Memory usage in MB
-#     cpu_usage = process.cpu_percent(interval=1)  # CPU usage in percentage
-#
-#     print("Memory usage:", memory_usage, "MB")
-#     print("CPU usage:", cpu_usage, "%")
+if __name__ == "__main__":
+
+    get_label()
+
+    # Get system resource usage
+    process = psutil.Process()
+    memory_usage = process.memory_info().rss / (1024 ** 2)  # Memory usage in MB
+    cpu_usage = process.cpu_percent(interval=1)  # CPU usage in percentage
+
+    print("Memory usage:", memory_usage, "MB")
+    print("CPU usage:", cpu_usage, "%")

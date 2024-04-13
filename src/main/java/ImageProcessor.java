@@ -103,7 +103,8 @@ public class ImageProcessor {
             while ((line = reader.readLine()) != null) {
                 output.append(line).append("\n");
             }
-            process.waitFor();
+            int exit_code = process.waitFor();
+            System.out.println(exit_code);
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
             throw new RuntimeException(e);
@@ -113,8 +114,8 @@ public class ImageProcessor {
 
     public static String processImage(BufferedImage image) {
         try {
-            ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream("src/main/java/saves/neuroinput"));
-            outputStream.writeObject(getPixelsArray(compressImage(rectangleImageToSquare(image))));
+            FileOutputStream fileOutputStream =new FileOutputStream("src/main/java/saves/neuroinput");
+            fileOutputStream.write(getPixelsArray(compressImage(rectangleImageToSquare(image))));
         } catch (IOException | EmptyImageException e) {
             e.printStackTrace();
             throw new RuntimeException(e);
@@ -124,7 +125,7 @@ public class ImageProcessor {
 
     public static void main(String[] args) throws IOException, EmptyImageException, InterruptedException {
         File file = new File("C:/Users/btlll/IdeaProjects/App/src/main/java/saves/image.png");
-        processImage(ImageIO.read(file));
+        System.out.println(processImage(ImageIO.read(file)));
     }
     private static class PCords{
         private int x;
