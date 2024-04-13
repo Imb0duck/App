@@ -33,15 +33,15 @@ def get_label():
     print(reversed_labels_list[prediction])
 
 
-if __name__ == "__main__":
-    image = torch.load("array1.pt")
-
-    get_label(image)
-
-    # Get system resource usage
-    process = psutil.Process()
-    memory_usage = process.memory_info().rss / (1024 ** 2)  # Memory usage in MB
-    cpu_usage = process.cpu_percent(interval=1)  # CPU usage in percentage
-
-    print("Memory usage:", memory_usage, "MB")
-    print("CPU usage:", cpu_usage, "%")
+# if __name__ == "__main__":
+#     image = torch.load("array1.pt")
+#
+#     get_label(image)
+#
+#     # Get system resource usage
+#     process = psutil.Process()
+#     memory_usage = process.memory_info().rss / (1024 ** 2)  # Memory usage in MB
+#     cpu_usage = process.cpu_percent(interval=1)  # CPU usage in percentage
+#
+#     print("Memory usage:", memory_usage, "MB")
+#     print("CPU usage:", cpu_usage, "%")
