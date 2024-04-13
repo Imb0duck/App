@@ -71,7 +71,7 @@ public class ImageEdit
         JToolBar toolbar = new  JToolBar("Toolbar", JToolBar.HORIZONTAL);
            
           JButton backbutton = new  JButton();
-          URL backIconUrl = getClass().getResource("/resources/back.png");
+          URL backIconUrl = getClass().getResource("/back.png");
           if (backIconUrl != null) {
             ImageIcon backIcon = new ImageIcon(backIconUrl);
             backbutton.setIcon(backIcon);
@@ -91,7 +91,7 @@ public class ImageEdit
           toolbar.add(backbutton);
 
           JButton pushresult = new  JButton();
-          URL pushresultIconUrl = getClass().getResource("/resources/pushresult.png");
+          URL pushresultIconUrl = getClass().getResource("/pushresult.png");
           if (pushresultIconUrl != null) {
             ImageIcon pushresultIcon = new ImageIcon(pushresultIconUrl);
             pushresult.setIcon(pushresultIcon);
