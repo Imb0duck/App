@@ -84,8 +84,8 @@ public class ImageProcessor {
 
     public static int[] getPixelsArray(BufferedImage image){
         int [] pixelsArray = new int[63*64];
-        for (int y = 0; y < image.getHeight(); y++) {
-            for (int x = 0; x < image.getWidth(); x++) {
+        for (int x = 0; x < image.getWidth(); x++) {
+            for (int y = 0; y < image.getHeight(); y++) {
                 int white = image.getRGB(x, y) & 0xFF;
                 pixelsArray[y * (image.getHeight()-1) + x] = white/16+1;
             }
