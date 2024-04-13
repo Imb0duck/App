@@ -4,13 +4,14 @@ import psutil
 import numpy as np
 from labels import reversed_labels_list
 import sys
+import matplotlib.pyplot as plt
 
 
 def get_label():
     image_path = sys.argv[1]
-    MODEL_PATH = 'models/Hiragana.pth'
+    MODEL_PATH = 'Ml/models/Hiragana.pth'
     model = HiraganaCNN(num_classes=48)
-    model.load_state_dict(torch.load(MODEL_PATH))
+    model.load_state_dict(torch.load(MODEL_PATH,map_location=torch.device('cpu')))
     model.eval()
 
     with open(image_path, 'rb') as file:
@@ -24,6 +25,8 @@ def get_label():
     pixels = np.empty(high_bits.size + low_bits.size, dtype=high_bits.dtype)
     pixels[0::2], pixels[1::2] = high_bits, low_bits
     pixels = pixels.astype(np.float32).reshape(1, 63, 64)
+    plt.imshow(pixels[0], cmap = 'gray')
+    plt.show()
 
     outputs = model(torch.tensor(pixels, dtype=torch.float32))
 
@@ -34,9 +37,8 @@ def get_label():
 
 
 if __name__ == "__main__":
-    image = torch.load("array1.pt")
 
-    get_label(image)
+    get_label()
 
     # Get system resource usage
     process = psutil.Process()
