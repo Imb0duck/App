@@ -58,7 +58,7 @@ public class ImageProcessor {
     }
     private static BufferedImage expandEmptySpace(BufferedImage image, PCords topLeft, PCords bottomRight) throws IOException {
         int frameOffset = (int)(Math.max(image.getWidth(), image.getHeight())*0.37);
-        BufferedImage copyOfImage = new BufferedImage(Math.max(image.getWidth(), image.getHeight())+frameOffset, Math.max(image.getWidth()+frameOffset, image.getHeight()), BufferedImage.TYPE_INT_RGB);
+        BufferedImage copyOfImage = new BufferedImage(Math.max(image.getWidth(), image.getHeight())+frameOffset, Math.max(image.getWidth(), image.getHeight())+frameOffset, BufferedImage.TYPE_INT_RGB);
         Graphics2D g = copyOfImage.createGraphics();
         g.setBackground(Color.WHITE);
         g.clearRect(0, 0, copyOfImage.getWidth(), copyOfImage.getHeight());
