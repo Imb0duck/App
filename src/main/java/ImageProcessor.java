@@ -117,8 +117,7 @@ public class ImageProcessor {
     }
 
     public static String processImage(BufferedImage image) {
-        try {
-            FileOutputStream fileOutputStream =new FileOutputStream("src/main/java/saves/neuroinput");
+        try (FileOutputStream fileOutputStream =new FileOutputStream("src/main/java/saves/neuroinput")){
             fileOutputStream.write(getPixelsArray(compressImage(rectangleImageToSquare(image))));
         } catch (IOException | EmptyImageException e) {
             e.printStackTrace();
