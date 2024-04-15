@@ -84,8 +84,8 @@ public class ImageProcessor {
     }
 
     private static byte[] getPixelsArray(BufferedImage image) throws IOException {
-        File outputfile = new File("image.jpg");
-        ImageIO.write(image, "jpg", outputfile);
+        //File outputfile = new File("image.jpg");
+        //ImageIO.write(image, "jpg", outputfile);
         byte [] pixelsArray = new byte[64*63/2];
         for (int y = 0; y < 63; y++){
             for (int x = 0; x < 64; x+=2){
