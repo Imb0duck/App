@@ -1,12 +1,9 @@
 import torch
 from HiraganaModelClass import HiraganaCNN
-import psutil
 import numpy as np
 from labels import reversed_labels_list
 import sys
-import matplotlib.pyplot as plt
 from torch.utils.data import DataLoader
-from torch.utils.data import Dataset
 
 image_path = sys.argv[1]
 MODEL_PATH = 'Ml/models/Hiragana.pth'
