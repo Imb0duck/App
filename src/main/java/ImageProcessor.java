@@ -27,7 +27,7 @@ public class ImageProcessor {
                 }
             }
         }
-        return new PCords(xVal-75, yVal-75);
+        return new PCords(xVal, yVal);
     }
     private static PCords findBottomRightNonEmptyPixel(BufferedImage image){
         int xVal = -1, yVal = -1;
@@ -51,21 +51,22 @@ public class ImageProcessor {
                 }
             }
         }
-        return new PCords(xVal+75, yVal+75);
+        return new PCords(xVal, yVal);
     }
     private static BufferedImage cropEmptySpace(BufferedImage image, PCords topLeft, PCords bottomRight){
         return image.getSubimage(topLeft.x,topLeft.y,bottomRight.x-topLeft.x,bottomRight.y-topLeft.y);
     }
     private static BufferedImage expandEmptySpace(BufferedImage image, PCords topLeft, PCords bottomRight) throws IOException {
-        BufferedImage copyOfImage = new BufferedImage(Math.max(image.getWidth(), image.getHeight()), Math.max(image.getWidth(), image.getHeight()), BufferedImage.TYPE_INT_RGB);
+        int frameOffset = (int)(Math.max(image.getWidth(), image.getHeight())*0.37);
+        BufferedImage copyOfImage = new BufferedImage(Math.max(image.getWidth(), image.getHeight())+frameOffset, Math.max(image.getWidth()+frameOffset, image.getHeight()), BufferedImage.TYPE_INT_RGB);
         Graphics2D g = copyOfImage.createGraphics();
         g.setBackground(Color.WHITE);
         g.clearRect(0, 0, copyOfImage.getWidth(), copyOfImage.getHeight());
         if(bottomRight.y - topLeft.y > image.getWidth()){
-            g.drawImage(image, (image.getHeight() - image.getWidth()) / 2, 0, null);
+            g.drawImage(image, (image.getHeight() - image.getWidth()) / 2 + frameOffset/2, frameOffset/2, null);
         }
         else{
-            g.drawImage(image, 0, (image.getWidth() - image.getHeight()) / 2, null);
+            g.drawImage(image, frameOffset/2, (image.getWidth() - image.getHeight()) / 2 + frameOffset/2, null);
         }
         return copyOfImage;
     }
@@ -77,6 +78,7 @@ public class ImageProcessor {
         }
         return expandEmptySpace(cropEmptySpace(image, topLeft, bottomRight), topLeft, bottomRight);
     }
+
     private static BufferedImage compressImage(BufferedImage image){
         return Scalr.resize(image, 64,63);
     }
