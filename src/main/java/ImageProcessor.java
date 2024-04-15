@@ -97,7 +97,8 @@ public class ImageProcessor {
     private static String launchNeuro() {
         StringBuilder output;
         try {
-            ProcessBuilder processBuilder = new ProcessBuilder("python", "ML/modelLaunch.py", "src/main/java/saves/neuroinput");
+            ProcessBuilder processBuilder = new ProcessBuilder( "pipenv","run","python","ML/modelLaunch.py","src/main/java/saves/neuroinput"
+            );
             Process process = processBuilder.start();
             BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
             output = new StringBuilder();
