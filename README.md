@@ -8,7 +8,7 @@ This project is made to help practice Japanese handwriting. It utilizes both Jav
 
 ### Prerequisites
 - [Python](https://www.python.org/downloads/) (version 3.x.x)
-- [pipenv](https://pipenv.pypa.io/en/latest/install/) (for managing Python dependencies)
+- [pipenv](pipenv.pypa.io/en/latest/) (for managing Python dependencies)
 
 ### Installation
 
@@ -33,7 +33,7 @@ To use this project, follow these steps:
 
 1. Make sure you have Java installed on your system.
 2. Navigate to the directory containing the `ImageEdit.java` file (e.g., `src/main/java/`).
-3. Compile and run the `ImageEdit.java` file to launch the machine learning model.
+3. Compile and run the `ImageEdit.java` file to launch our project. You should see a new window open.
 
 ### Project Structure
 
