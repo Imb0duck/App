@@ -84,8 +84,8 @@ public class ImageProcessor {
     }
 
     private static byte[] getPixelsArray(BufferedImage image) throws IOException {
-        //File outputfile = new File("image.jpg");
-        //ImageIO.write(image, "jpg", outputfile);
+        File outputfile = new File("image.jpg");
+        ImageIO.write(image, "jpg", outputfile);
         byte [] pixelsArray = new byte[64*63/2];
         for (int y = 0; y < 63; y++){
             for (int x = 0; x < 64; x+=2){
@@ -96,34 +96,13 @@ public class ImageProcessor {
         }
         return pixelsArray;
     }
-    private static String launchNeuro() {
-        StringBuilder output;
-        try {
-            ProcessBuilder processBuilder = new ProcessBuilder( "pipenv","run","python","ML/modelLaunch.py","src/main/java/saves/neuroinput"
-            );
-            Process process = processBuilder.start();
-            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-            output = new StringBuilder();
-            String line;
-            while ((line = reader.readLine()) != null) {
-                output.append(line).append("\n");
-            }
-            process.waitFor();
-        } catch (IOException | InterruptedException e) {
-            e.printStackTrace();
-            throw new RuntimeException(e);
-        }
-        return output.toString();
-    }
 
-    public static String processImage(BufferedImage image) {
-        try (FileOutputStream fileOutputStream =new FileOutputStream("src/main/java/saves/neuroinput")){
-            fileOutputStream.write(getPixelsArray(compressImage(rectangleImageToSquare(image))));
+    public static byte[] processImage(BufferedImage image) {
+        try {
+            return getPixelsArray(compressImage(rectangleImageToSquare(image)));
         } catch (IOException | EmptyImageException e) {
-            e.printStackTrace();
             throw new RuntimeException(e);
         }
-        return launchNeuro();
     }
 
     public static void main(String[] args) throws IOException, EmptyImageException, InterruptedException {

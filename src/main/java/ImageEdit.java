@@ -111,7 +111,7 @@ public class ImageEdit
             {
               public void actionPerformed(ActionEvent event)
               {
-                String processedPixels = ImageProcessor.processImage(imag);
+                String processedPixels = NeuroBridge.recognizeSymbol(imag, false);
                 outputTextArea.setText(processedPixels);
 
                 clearImage();
