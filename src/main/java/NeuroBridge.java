@@ -9,17 +9,17 @@ import java.io.InputStreamReader;
 public class NeuroBridge {
 
     public static String recognizeSymbol(BufferedImage bufferedImage, boolean remotely){
-        byte [] image_bytes;
+        byte [] imageBytes;
         try {
-            image_bytes = ImageProcessor.processImage(bufferedImage);
+            imageBytes = ImageProcessor.processImage(bufferedImage);
         } catch (ImageProcessor.EmptyImageException e) {
             return "Empty image";
         }
         if(remotely){
-            return launchNeuroRemotely(image_bytes);
+            return launchNeuroRemotely(imageBytes);
         }
         else {
-            return launchNeuroLocally(image_bytes);
+            return launchNeuroLocally(imageBytes);
         }
     }
     private static String launchNeuroLocally(byte [] image_bytes) {
