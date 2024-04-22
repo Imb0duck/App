@@ -183,7 +183,7 @@ public class ImageEdit {
         pushresult.addActionListener(new  ActionListener()
           {
             public void actionPerformed(ActionEvent event) {
-              String processedPixels = ImageProcessor.processImage(imag);   
+              String processedPixels = NeuroBridge.recognizeSymbol(imag, false);
               outputTextArea.append(processedPixels);
 
               clearImage();
