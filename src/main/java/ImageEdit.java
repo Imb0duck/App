@@ -21,7 +21,7 @@ public class ImageEdit {
     public ImageEdit() {
 
         f = new MyFrame("MLJapanese");
-        f.setSize(350,350);
+        f.setSize(1000,700);
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         f.getContentPane().setBackground(Color.gray);
         maincolor = Color.black;
@@ -55,7 +55,7 @@ public class ImageEdit {
 
         //menu
         JButton training = new JButton();
-        URL trainingIconUrl = getClass().getResource("/training.png");
+        URL trainingIconUrl = getClass().getResource("/resources/training.png");
         if (trainingIconUrl != null) {
           ImageIcon trainingIcon = new ImageIcon(trainingIconUrl);
           training.setIcon(trainingIcon);
@@ -66,7 +66,7 @@ public class ImageEdit {
         menu.add(training);
 
         JButton education = new JButton();
-        URL educationIconUrl = getClass().getResource("/education.png");
+        URL educationIconUrl = getClass().getResource("/resources/education.png");
         if (educationIconUrl != null) {
           ImageIcon educationIcon = new ImageIcon(educationIconUrl);
           education.setIcon(educationIcon);
@@ -77,7 +77,7 @@ public class ImageEdit {
         menu.add(education);
 
         JButton test = new JButton();
-        URL testIconUrl = getClass().getResource("/test.png");
+        URL testIconUrl = getClass().getResource("/resources/test.png");
         if (testIconUrl != null) {
           ImageIcon testIcon = new ImageIcon(testIconUrl);
           test.setIcon(testIcon);
@@ -88,7 +88,7 @@ public class ImageEdit {
         menu.add(test);
 
         JButton hieroglyphs = new JButton();
-        URL hieroglyphsIconUrl = getClass().getResource("/hieroglyphs.png");
+        URL hieroglyphsIconUrl = getClass().getResource("/resources/hieroglyphs.png");
         if (hieroglyphsIconUrl != null) {
           ImageIcon hieroglyphsIcon = new ImageIcon(hieroglyphsIconUrl);
           hieroglyphs.setIcon(hieroglyphsIcon);
@@ -99,7 +99,7 @@ public class ImageEdit {
         menu.add(hieroglyphs);
 
         JButton themeColor = new JButton();
-        URL themeColorIconUrl = getClass().getResource("/themeColor.png");
+        URL themeColorIconUrl = getClass().getResource("/resources/themeColor.png");
         if (themeColorIconUrl != null) {
           ImageIcon themeColorIcon = new ImageIcon(themeColorIconUrl);
           themeColor.setIcon(themeColorIcon);
@@ -120,7 +120,7 @@ public class ImageEdit {
 
         //toolbar
         JButton backbutton = new JButton();
-        URL backIconUrl = getClass().getResource("/back.png");
+        URL backIconUrl = getClass().getResource("/resources/back.png");
         if (backIconUrl != null) {
           ImageIcon backIcon = new ImageIcon(backIconUrl);
           backbutton.setIcon(backIcon);
@@ -131,7 +131,7 @@ public class ImageEdit {
         toolbar.add(backbutton);
 
         JButton pushresult = new JButton();
-        URL pushresultIconUrl = getClass().getResource("/pushresult.png");
+        URL pushresultIconUrl = getClass().getResource("/resources/pushresult.png");
         if (pushresultIconUrl != null) {
           ImageIcon pushresultIcon = new ImageIcon(pushresultIconUrl);
           pushresult.setIcon(pushresultIcon);
@@ -151,7 +151,7 @@ public class ImageEdit {
         toolbar.add(statisticTextArea);
 
         JButton resetStatistic = new JButton();
-        URL resetStatisticIconUrl = getClass().getResource("/resetStatistic.png");
+        URL resetStatisticIconUrl = getClass().getResource("/resources/resetStatistic.png");
         if (resetStatisticIconUrl != null) {
           ImageIcon resetStatisticIcon = new ImageIcon(resetStatisticIconUrl);
           resetStatistic.setIcon(resetStatisticIcon);
@@ -164,6 +164,27 @@ public class ImageEdit {
         f.setLayout(null);
         f.setVisible(true);
 
+        //menu actions
+        themeColor.addActionListener(new  ActionListener()
+          {
+            public void actionPerformed(ActionEvent event) { 
+              if (maincolor == Color.black) {
+                maincolor = Color.white;
+                clearImage();
+                japan.setBackground(Color.white);
+                history.clear();
+              }
+              else {
+                maincolor = Color.black;
+                clearImage();
+                japan.setBackground(Color.white);
+                history.clear();
+              }
+            }
+
+          });
+
+        //toolbar actions
         backbutton.addActionListener(new  ActionListener()
           {
             public void actionPerformed(ActionEvent event) { 
@@ -183,7 +204,8 @@ public class ImageEdit {
         pushresult.addActionListener(new  ActionListener()
           {
             public void actionPerformed(ActionEvent event) {
-              String processedPixels = NeuroBridge.recognizeSymbol(imag, false);
+              String processedPixels = ImageProcessor.processImage(imag);
+              outputTextArea.setText(null);
               outputTextArea.append(processedPixels);
 
               clearImage();
@@ -191,7 +213,8 @@ public class ImageEdit {
             }
     
           });
-           
+        
+        //canvas actions
         japan.addMouseMotionListener(new  MouseMotionAdapter()
           {
             public void mouseDragged(MouseEvent e) { 
@@ -265,7 +288,12 @@ public class ImageEdit {
 
     private void clearImage() {
       Graphics2D g2 = imag.createGraphics();
-      g2.setColor(Color.white);
+      if(maincolor == Color.black){
+        g2.setColor(Color.white);
+      }
+      else{
+        g2.setColor(Color.black);
+      }
       g2.fillRect(0, 0, imag.getWidth(), imag.getHeight());
       g2.dispose();
       japan.repaint();
