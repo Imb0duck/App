@@ -56,7 +56,7 @@ public class ImageProcessor {
     private static BufferedImage cropEmptySpace(BufferedImage image, PCords topLeft, PCords bottomRight){
         return image.getSubimage(topLeft.x,topLeft.y,bottomRight.x-topLeft.x,bottomRight.y-topLeft.y);
     }
-    private static BufferedImage expandEmptySpace(BufferedImage image, PCords topLeft, PCords bottomRight) throws IOException {
+    private static BufferedImage expandEmptySpace(BufferedImage image, PCords topLeft, PCords bottomRight) {
         int frameOffset = (int)(Math.max(image.getWidth(), image.getHeight())*0.37);
         BufferedImage copyOfImage = new BufferedImage(Math.max(image.getWidth(), image.getHeight())+frameOffset, Math.max(image.getWidth(), image.getHeight())+frameOffset, BufferedImage.TYPE_INT_RGB);
         Graphics2D g = copyOfImage.createGraphics();
@@ -97,17 +97,18 @@ public class ImageProcessor {
         return pixelsArray;
     }
 
-    public static byte[] processImage(BufferedImage image) {
+    public static byte[] processImage(BufferedImage image) throws EmptyImageException{
         try {
             return getPixelsArray(compressImage(rectangleImageToSquare(image)));
-        } catch (IOException | EmptyImageException e) {
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public static void main(String[] args) throws IOException, EmptyImageException, InterruptedException {
+    public static void main(String[] args) throws IOException{
         File file = new File("C:/Users/btlll/IdeaProjects/App/src/main/java/saves/image.png");
-        System.out.println(processImage(ImageIO.read(file)));
+        //System.out.println(processImage(ImageIO.read(file)));
+        //System.out.println(processImage(ImageIO.read(file)));
     }
     private static class PCords{
         private int x;

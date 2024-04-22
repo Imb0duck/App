@@ -9,7 +9,12 @@ import java.io.InputStreamReader;
 public class NeuroBridge {
 
     public static String recognizeSymbol(BufferedImage bufferedImage, boolean remotely){
-        byte [] image_bytes = ImageProcessor.processImage(bufferedImage);
+        byte [] image_bytes;
+        try {
+            image_bytes = ImageProcessor.processImage(bufferedImage);
+        } catch (ImageProcessor.EmptyImageException e) {
+            return "Empty image";
+        }
         if(remotely){
             return launchNeuroRemotely(image_bytes);
         }
