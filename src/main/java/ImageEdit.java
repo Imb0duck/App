@@ -55,7 +55,7 @@ public class ImageEdit {
 
         //menu
         JButton training = new JButton();
-        URL trainingIconUrl = getClass().getResource("/resources/training.png");
+        URL trainingIconUrl = getClass().getResource("/training.png");
         if (trainingIconUrl != null) {
           ImageIcon trainingIcon = new ImageIcon(trainingIconUrl);
           training.setIcon(trainingIcon);
@@ -66,7 +66,7 @@ public class ImageEdit {
         menu.add(training);
 
         JButton education = new JButton();
-        URL educationIconUrl = getClass().getResource("/resources/education.png");
+        URL educationIconUrl = getClass().getResource("/education.png");
         if (educationIconUrl != null) {
           ImageIcon educationIcon = new ImageIcon(educationIconUrl);
           education.setIcon(educationIcon);
@@ -77,7 +77,7 @@ public class ImageEdit {
         menu.add(education);
 
         JButton test = new JButton();
-        URL testIconUrl = getClass().getResource("/resources/test.png");
+        URL testIconUrl = getClass().getResource("/test.png");
         if (testIconUrl != null) {
           ImageIcon testIcon = new ImageIcon(testIconUrl);
           test.setIcon(testIcon);
@@ -88,7 +88,7 @@ public class ImageEdit {
         menu.add(test);
 
         JButton hieroglyphs = new JButton();
-        URL hieroglyphsIconUrl = getClass().getResource("/resources/hieroglyphs.png");
+        URL hieroglyphsIconUrl = getClass().getResource("/hieroglyphs.png");
         if (hieroglyphsIconUrl != null) {
           ImageIcon hieroglyphsIcon = new ImageIcon(hieroglyphsIconUrl);
           hieroglyphs.setIcon(hieroglyphsIcon);
@@ -99,7 +99,7 @@ public class ImageEdit {
         menu.add(hieroglyphs);
 
         JButton themeColor = new JButton();
-        URL themeColorIconUrl = getClass().getResource("/resources/themeColor.png");
+        URL themeColorIconUrl = getClass().getResource("/themeColor.png");
         if (themeColorIconUrl != null) {
           ImageIcon themeColorIcon = new ImageIcon(themeColorIconUrl);
           themeColor.setIcon(themeColorIcon);
@@ -120,7 +120,7 @@ public class ImageEdit {
 
         //toolbar
         JButton backbutton = new JButton();
-        URL backIconUrl = getClass().getResource("/resources/back.png");
+        URL backIconUrl = getClass().getResource("/back.png");
         if (backIconUrl != null) {
           ImageIcon backIcon = new ImageIcon(backIconUrl);
           backbutton.setIcon(backIcon);
@@ -131,7 +131,7 @@ public class ImageEdit {
         toolbar.add(backbutton);
 
         JButton pushresult = new JButton();
-        URL pushresultIconUrl = getClass().getResource("/resources/pushresult.png");
+        URL pushresultIconUrl = getClass().getResource("/pushresult.png");
         if (pushresultIconUrl != null) {
           ImageIcon pushresultIcon = new ImageIcon(pushresultIconUrl);
           pushresult.setIcon(pushresultIcon);
@@ -151,7 +151,7 @@ public class ImageEdit {
         toolbar.add(statisticTextArea);
 
         JButton resetStatistic = new JButton();
-        URL resetStatisticIconUrl = getClass().getResource("/resources/resetStatistic.png");
+        URL resetStatisticIconUrl = getClass().getResource("/resetStatistic.png");
         if (resetStatisticIconUrl != null) {
           ImageIcon resetStatisticIcon = new ImageIcon(resetStatisticIconUrl);
           resetStatistic.setIcon(resetStatisticIcon);
