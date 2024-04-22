@@ -5,6 +5,7 @@ import  javax.swing.*;
 import  java.awt.image.*;
 import  java.util.*;
 import  java.net.URL;
+import javax.swing.border.LineBorder;
 
 public class ImageEdit {
     int  xPad;
@@ -22,72 +23,146 @@ public class ImageEdit {
         f = new MyFrame("MLJapanese");
         f.setSize(350,350);
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        f.getContentPane().setBackground(Color.gray);
         maincolor = Color.black;
          
-        /*JMenuBar menuBar = new  JMenuBar();
-        f.setJMenuBar(menuBar);
-        menuBar.setBounds(0,0,350,30);
-        JMenu fileMenu = new  JMenu("Режимы");
-        menuBar.add(fileMenu);
-         
-        Action loadAction = new  AbstractAction("")
-        {
-           public void actionPerformed(ActionEvent event)
-           {
-              }
-            };
-        JMenuItem loadMenu = new  JMenuItem(loadAction);
-        fileMenu.add(loadMenu);
-         
-        Action saveAction = new  AbstractAction("")
-        {
-           public void actionPerformed(ActionEvent event)
-           {
-               
-           }
-            };
-        JMenuItem saveMenu = new  JMenuItem(saveAction);
-        fileMenu.add(saveMenu);
-         
-        Action saveasAction = new  AbstractAction("")
-        {
-           public void actionPerformed(ActionEvent event)
-           {
-              
-            };
-        JMenuItem saveasMenu = new  JMenuItem(saveasAction);
-        fileMenu.add(saveasMenu);*/
-         
         japan = new  MyPanel();
-        japan.setBounds(0,30,350,350);
+        japan.setBounds(300,130,350,350);
         japan.setBackground(Color.white);
         japan.setOpaque(true);
         f.add(japan);
-      
-        JToolBar toolbar = new  JToolBar("Toolbar", JToolBar.HORIZONTAL);
 
+        JToolBar menu = new  JToolBar("Menu", JToolBar.VERTICAL);
+        menu.setBounds(0, 0, 300, 1000);
+        menu.setBorderPainted(false);
+        menu.setFloatable(false);
+        menu.setBackground(Color.gray);
+        f.add(menu);
+
+        JToolBar taskWindow = new  JToolBar("TaskWindow", JToolBar.HORIZONTAL);
+        taskWindow.setBounds(300, 5, 1500, 60);
+        taskWindow.setBorderPainted(false);
+        taskWindow.setFloatable(false);
+        taskWindow.setBackground(Color.gray);
+        f.add(taskWindow);
+
+        JToolBar toolbar = new JToolBar("Toolbar", JToolBar.HORIZONTAL);
+        toolbar.setBounds(300, 65, 1500, 60);
+        toolbar.setBorderPainted(false);
+        toolbar.setFloatable(false);
+        toolbar.setBackground(Color.gray);
+        f.add(toolbar);
+
+        //menu
+        JButton training = new JButton();
+        URL trainingIconUrl = getClass().getResource("/resources/training.png");
+        if (trainingIconUrl != null) {
+          ImageIcon trainingIcon = new ImageIcon(trainingIconUrl);
+          training.setIcon(trainingIcon);
+        }
+        training.setPreferredSize(new Dimension(300, 70));
+        training.setMaximumSize(new Dimension(300, 70));
+        training.setBorder(new LineBorder(Color.black));
+        menu.add(training);
+
+        JButton education = new JButton();
+        URL educationIconUrl = getClass().getResource("/resources/education.png");
+        if (educationIconUrl != null) {
+          ImageIcon educationIcon = new ImageIcon(educationIconUrl);
+          education.setIcon(educationIcon);
+        }
+        education.setPreferredSize(new Dimension(300, 70));
+        education.setMaximumSize(new Dimension(300, 70));
+        education.setBorder(new LineBorder(Color.black));
+        menu.add(education);
+
+        JButton test = new JButton();
+        URL testIconUrl = getClass().getResource("/resources/test.png");
+        if (testIconUrl != null) {
+          ImageIcon testIcon = new ImageIcon(testIconUrl);
+          test.setIcon(testIcon);
+        }
+        test.setPreferredSize(new Dimension(300, 70));
+        test.setMaximumSize(new Dimension(300, 70));
+        test.setBorder(new LineBorder(Color.black));
+        menu.add(test);
+
+        JButton hieroglyphs = new JButton();
+        URL hieroglyphsIconUrl = getClass().getResource("/resources/hieroglyphs.png");
+        if (hieroglyphsIconUrl != null) {
+          ImageIcon hieroglyphsIcon = new ImageIcon(hieroglyphsIconUrl);
+          hieroglyphs.setIcon(hieroglyphsIcon);
+        }
+        hieroglyphs.setPreferredSize(new Dimension(300, 70));
+        hieroglyphs.setMaximumSize(new Dimension(300, 70));
+        hieroglyphs.setBorder(new LineBorder(Color.black));
+        menu.add(hieroglyphs);
+
+        JButton themeColor = new JButton();
+        URL themeColorIconUrl = getClass().getResource("/resources/themeColor.png");
+        if (themeColorIconUrl != null) {
+          ImageIcon themeColorIcon = new ImageIcon(themeColorIconUrl);
+          themeColor.setIcon(themeColorIcon);
+        }
+        themeColor.setPreferredSize(new Dimension(300, 70));
+        themeColor.setMaximumSize(new Dimension(300, 70));
+        themeColor.setBorder(new LineBorder(Color.black));
+        menu.add(themeColor);
+
+        //taskWindow
         JTextArea outputTextArea = new JTextArea();
         outputTextArea.setEditable(false);
-        //outputTextArea.setLineWrap(true);
-        //JScrollPane scrollPane = new JScrollPane(outputTextArea);
-        toolbar.add(outputTextArea);
-           
-        JButton backbutton = new  JButton();
-        URL backIconUrl = getClass().getResource("/resources/back.png");
-          if (backIconUrl != null) {
-            ImageIcon backIcon = new ImageIcon(backIconUrl);
-            backbutton.setIcon(backIcon);
-          }
+        outputTextArea.setBackground(Color.white);
+        outputTextArea.setBorder(new LineBorder(Color.black));
+        outputTextArea.setPreferredSize(new Dimension(900, 60));
+        outputTextArea.setMaximumSize(new Dimension(900, 60));
+        taskWindow.add(outputTextArea);
 
+        //toolbar
+        JButton backbutton = new JButton();
+        URL backIconUrl = getClass().getResource("/resources/back.png");
+        if (backIconUrl != null) {
+          ImageIcon backIcon = new ImageIcon(backIconUrl);
+          backbutton.setIcon(backIcon);
+        }
+        backbutton.setPreferredSize(new Dimension(60, 60));
+        backbutton.setMaximumSize(new Dimension(60, 60));
+        backbutton.setBorder(new LineBorder(Color.black));
         toolbar.add(backbutton);
 
-        JButton pushresult = new  JButton();
+        JButton pushresult = new JButton();
         URL pushresultIconUrl = getClass().getResource("/resources/pushresult.png");
-          if (pushresultIconUrl != null) {
-            ImageIcon pushresultIcon = new ImageIcon(pushresultIconUrl);
-            pushresult.setIcon(pushresultIcon);
-          }
+        if (pushresultIconUrl != null) {
+          ImageIcon pushresultIcon = new ImageIcon(pushresultIconUrl);
+          pushresult.setIcon(pushresultIcon);
+        }
+        pushresult.setPreferredSize(new Dimension(60, 60));
+        pushresult.setMaximumSize(new Dimension(60, 60));
+        pushresult.setBorder(new LineBorder(Color.black));
         toolbar.add(pushresult);
+
+        JTextArea statisticTextArea = new JTextArea();
+        statisticTextArea.setEditable(false);
+        statisticTextArea.setBackground(Color.white);
+        statisticTextArea.setBorder(new LineBorder(Color.black));
+        statisticTextArea.setPreferredSize(new Dimension(90, 60));
+        statisticTextArea.setMaximumSize(new Dimension(90, 60));
+        //statisticTextArea.setForeground(Color.BLUE);
+        toolbar.add(statisticTextArea);
+
+        JButton resetStatistic = new JButton();
+        URL resetStatisticIconUrl = getClass().getResource("/resources/resetStatistic.png");
+        if (resetStatisticIconUrl != null) {
+          ImageIcon resetStatisticIcon = new ImageIcon(resetStatisticIconUrl);
+          resetStatistic.setIcon(resetStatisticIcon);
+        }
+        resetStatistic.setPreferredSize(new Dimension(60, 60));
+        resetStatistic.setMaximumSize(new Dimension(60, 60));
+        resetStatistic.setBorder(new LineBorder(Color.black));
+        toolbar.add(resetStatistic);
+
+        f.setLayout(null);
+        f.setVisible(true);
 
         backbutton.addActionListener(new  ActionListener()
           {
@@ -116,9 +191,6 @@ public class ImageEdit {
             }
     
           });
-                     
-        toolbar.setBounds(0, 0, 350, 30);
-        f.add(toolbar);
            
         japan.addMouseMotionListener(new  MouseMotionAdapter()
           {
@@ -173,9 +245,6 @@ public class ImageEdit {
               japan.repaint();
             }
           });
-
-        f.setLayout(null);
-        f.setVisible(true);
     }
 
 
