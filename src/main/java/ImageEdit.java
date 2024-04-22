@@ -9,7 +9,7 @@ import  java.net.URL;
 public class ImageEdit {
     int  xPad;
     int  yPad;
-    boolean mouseMoved = false;
+    boolean mouseClicked = false;
     
     Color maincolor;
     MyFrame f;
@@ -108,8 +108,8 @@ public class ImageEdit {
         pushresult.addActionListener(new  ActionListener()
           {
             public void actionPerformed(ActionEvent event) {
-              String processedPixels = ImageProcessor.processImage(imag);   
-              outputTextArea.append(processedPixels);
+              //String processedPixels = ImageProcessor.processImage(imag);   
+              //outputTextArea.append(processedPixels);
 
               clearImage();
               history.clear();
@@ -127,6 +127,12 @@ public class ImageEdit {
                 Graphics2D g2 = imag.createGraphics();
                 g2.setColor(maincolor);
                 g2.setStroke(new  CalligraphicStroke(10.0f));
+
+                if(mouseClicked){
+                  BufferedImage currentImageCopy = deepCopy(imag);
+                  history.push(currentImageCopy);
+                  mouseClicked = false;
+                }
                 
                 //g2.drawLine(xPad, yPad, e.getX(), e.getY());
                 g2.drawLine(xPad + 2, yPad + 2, e.getX() + 2, e.getY() + 2);
@@ -136,7 +142,7 @@ public class ImageEdit {
                       
                 xPad=e.getX();
                 yPad=e.getY();
-                mouseMoved = true;
+                
                 g2.dispose();
                 japan.repaint();
               }
@@ -149,11 +155,7 @@ public class ImageEdit {
               if(e.getID() == MouseEvent.MOUSE_PRESSED) {          
                 xPad = e.getX();
                 yPad = e.getY();
-                if(mouseMoved){
-                  BufferedImage currentImageCopy = deepCopy(imag);
-                  history.push(currentImageCopy);
-                  mouseMoved = false;
-                }
+                mouseClicked = true;
               }
             }
           });
