@@ -6,11 +6,19 @@ import  java.awt.image.*;
 import  java.util.*;
 import  java.net.URL;
 import javax.swing.border.LineBorder;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+
 
 public class ImageEdit {
-    int  xPad;
-    int  yPad;
+    int xPad;
+    int yPad;
+    int rightAnswers = 0;
+    int allAnswers = 0;
     boolean mouseClicked = false;
+    String[] names = new String[92];
+    int[] priority = new int[92];
     
     Color maincolor;
     MyFrame f;
@@ -20,6 +28,22 @@ public class ImageEdit {
 
     public ImageEdit() {
 
+        String fileName = "src/resources/alphabet.txt";
+        try(BufferedReader reader = new BufferedReader(new FileReader(fileName))){
+          String line;
+          int index = 0;
+          while ((line = reader.readLine()) != null && index < 92) {
+              String[] parts = line.split("\\s+");
+              if (parts.length == 2) {
+                  names[index] = parts[0];
+                  priority[index] = Integer.parseInt(parts[1]);
+                  index++;
+              }
+          }
+        } catch (IOException e) {
+          e.printStackTrace();
+        }
+      
         f = new MyFrame("MLJapanese");
         f.setSize(1000,700);
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -53,118 +77,83 @@ public class ImageEdit {
         toolbar.setBackground(Color.gray);
         f.add(toolbar);
 
+        JToolBar symbolChoice = new JToolBar("Toolbar", JToolBar.HORIZONTAL);
+        symbolChoice.setBounds(300, 5, 1500, 1500);
+        symbolChoice.setBorderPainted(false);
+        symbolChoice.setFloatable(false);
+        symbolChoice.setBackground(Color.gray);
+        symbolChoice.setVisible(false);
+        
+
+        JScrollPane symbolPane = new JScrollPane(symbolChoice);
+        symbolPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        for (int i = 0; i < 92; i++) {
+          JButton button = createAlphabet(i, symbolPane);
+        }
+        f.add(symbolPane);
+        
+
         //menu
-        JButton training = new JButton();
-        URL trainingIconUrl = getClass().getResource("/resources/training.png");
-        if (trainingIconUrl != null) {
-          ImageIcon trainingIcon = new ImageIcon(trainingIconUrl);
-          training.setIcon(trainingIcon);
-        }
-        training.setPreferredSize(new Dimension(300, 70));
-        training.setMaximumSize(new Dimension(300, 70));
-        training.setBorder(new LineBorder(Color.black));
-        menu.add(training);
-
-        JButton education = new JButton();
-        URL educationIconUrl = getClass().getResource("/resources/education.png");
-        if (educationIconUrl != null) {
-          ImageIcon educationIcon = new ImageIcon(educationIconUrl);
-          education.setIcon(educationIcon);
-        }
-        education.setPreferredSize(new Dimension(300, 70));
-        education.setMaximumSize(new Dimension(300, 70));
-        education.setBorder(new LineBorder(Color.black));
-        menu.add(education);
-
-        JButton test = new JButton();
-        URL testIconUrl = getClass().getResource("/resources/test.png");
-        if (testIconUrl != null) {
-          ImageIcon testIcon = new ImageIcon(testIconUrl);
-          test.setIcon(testIcon);
-        }
-        test.setPreferredSize(new Dimension(300, 70));
-        test.setMaximumSize(new Dimension(300, 70));
-        test.setBorder(new LineBorder(Color.black));
-        menu.add(test);
-
-        JButton hieroglyphs = new JButton();
-        URL hieroglyphsIconUrl = getClass().getResource("/resources/hieroglyphs.png");
-        if (hieroglyphsIconUrl != null) {
-          ImageIcon hieroglyphsIcon = new ImageIcon(hieroglyphsIconUrl);
-          hieroglyphs.setIcon(hieroglyphsIcon);
-        }
-        hieroglyphs.setPreferredSize(new Dimension(300, 70));
-        hieroglyphs.setMaximumSize(new Dimension(300, 70));
-        hieroglyphs.setBorder(new LineBorder(Color.black));
-        menu.add(hieroglyphs);
-
-        JButton themeColor = new JButton();
-        URL themeColorIconUrl = getClass().getResource("/resources/themeColor.png");
-        if (themeColorIconUrl != null) {
-          ImageIcon themeColorIcon = new ImageIcon(themeColorIconUrl);
-          themeColor.setIcon(themeColorIcon);
-        }
-        themeColor.setPreferredSize(new Dimension(300, 70));
-        themeColor.setMaximumSize(new Dimension(300, 70));
-        themeColor.setBorder(new LineBorder(Color.black));
-        menu.add(themeColor);
-
+        JButton training = createButton("training", 300, 70, Color.black, menu);
+        JButton education = createButton("education", 300, 70, Color.black, menu);
+        JButton test = createButton("test", 300, 70, Color.black, menu);
+        JButton hieroglyphs = createButton("hieroglyphs", 300, 70, Color.black, menu);
+        JButton themeColor = createButton("themeColor", 300, 70, Color.black, menu);
         //taskWindow
-        JTextArea outputTextArea = new JTextArea();
-        outputTextArea.setEditable(false);
-        outputTextArea.setBackground(Color.white);
-        outputTextArea.setBorder(new LineBorder(Color.black));
-        outputTextArea.setPreferredSize(new Dimension(900, 60));
-        outputTextArea.setMaximumSize(new Dimension(900, 60));
-        taskWindow.add(outputTextArea);
-
+        JTextArea outputTextArea = createTextArea(900, 60, taskWindow);  
         //toolbar
-        JButton backbutton = new JButton();
-        URL backIconUrl = getClass().getResource("/resources/back.png");
-        if (backIconUrl != null) {
-          ImageIcon backIcon = new ImageIcon(backIconUrl);
-          backbutton.setIcon(backIcon);
-        }
-        backbutton.setPreferredSize(new Dimension(60, 60));
-        backbutton.setMaximumSize(new Dimension(60, 60));
-        backbutton.setBorder(new LineBorder(Color.black));
-        toolbar.add(backbutton);
-
-        JButton pushresult = new JButton();
-        URL pushresultIconUrl = getClass().getResource("/resources/pushresult.png");
-        if (pushresultIconUrl != null) {
-          ImageIcon pushresultIcon = new ImageIcon(pushresultIconUrl);
-          pushresult.setIcon(pushresultIcon);
-        }
-        pushresult.setPreferredSize(new Dimension(60, 60));
-        pushresult.setMaximumSize(new Dimension(60, 60));
-        pushresult.setBorder(new LineBorder(Color.black));
-        toolbar.add(pushresult);
-
-        JTextArea statisticTextArea = new JTextArea();
-        statisticTextArea.setEditable(false);
-        statisticTextArea.setBackground(Color.white);
-        statisticTextArea.setBorder(new LineBorder(Color.black));
-        statisticTextArea.setPreferredSize(new Dimension(90, 60));
-        statisticTextArea.setMaximumSize(new Dimension(90, 60));
+        JButton backbutton = createButton("back", 60, 60, Color.black, toolbar);
+        JButton pushresult = createButton("pushresult", 60, 60, Color.black, toolbar);
+        JTextArea statisticTextArea = createTextArea(90, 60, toolbar);
         //statisticTextArea.setForeground(Color.BLUE);
-        toolbar.add(statisticTextArea);
+        JButton resetStatistic = createButton("resetStatistic", 60, 60, Color.black, toolbar);
+        //symbolPane
 
-        JButton resetStatistic = new JButton();
-        URL resetStatisticIconUrl = getClass().getResource("/resources/resetStatistic.png");
-        if (resetStatisticIconUrl != null) {
-          ImageIcon resetStatisticIcon = new ImageIcon(resetStatisticIconUrl);
-          resetStatistic.setIcon(resetStatisticIcon);
-        }
-        resetStatistic.setPreferredSize(new Dimension(60, 60));
-        resetStatistic.setMaximumSize(new Dimension(60, 60));
-        resetStatistic.setBorder(new LineBorder(Color.black));
-        toolbar.add(resetStatistic);
 
         f.setLayout(null);
         f.setVisible(true);
 
         //menu actions
+        training.addActionListener(new  ActionListener()
+          {
+            public void actionPerformed(ActionEvent event) {
+              taskWindow.setVisible(true);
+              toolbar.setVisible(true);
+              japan.setVisible(true);
+              symbolChoice.setVisible(false);
+            }
+          });
+
+        education.addActionListener(new  ActionListener()
+          {
+            public void actionPerformed(ActionEvent event) {
+              taskWindow.setVisible(true);
+              toolbar.setVisible(true);
+              japan.setVisible(true);
+              symbolChoice.setVisible(false);
+            }
+          });
+
+        test.addActionListener(new  ActionListener()
+          {
+            public void actionPerformed(ActionEvent event) {
+              taskWindow.setVisible(true);
+              toolbar.setVisible(true);
+              japan.setVisible(true);
+              symbolChoice.setVisible(false);
+            }
+          });
+
+        hieroglyphs.addActionListener(new  ActionListener()
+          {
+            public void actionPerformed(ActionEvent event) {
+              taskWindow.setVisible(false);
+              toolbar.setVisible(false);
+              japan.setVisible(false);
+              symbolChoice.setVisible(true);
+            }
+          });
+
         themeColor.addActionListener(new  ActionListener()
           {
             public void actionPerformed(ActionEvent event) { 
@@ -204,9 +193,9 @@ public class ImageEdit {
         pushresult.addActionListener(new  ActionListener()
           {
             public void actionPerformed(ActionEvent event) {
-              String processedPixels = ImageProcessor.processImage(imag);
-              outputTextArea.setText(null);
-              outputTextArea.append(processedPixels);
+              //String processedPixels = ImageProcessor.processImage(imag);
+              //outputTextArea.setText(null);
+              //outputTextArea.append(processedPixels);
 
               clearImage();
               history.clear();
@@ -229,7 +218,6 @@ public class ImageEdit {
                   mouseClicked = false;
                 }
                 
-                //g2.drawLine(xPad, yPad, e.getX(), e.getY());
                 g2.drawLine(xPad + 2, yPad + 2, e.getX() + 2, e.getY() + 2);
                 g2.drawLine(xPad + 7, yPad + 7, e.getX() + 7, e.getY() + 7);
                 g2.drawLine(xPad - 2, yPad - 2, e.getX() - 2, e.getY() - 2);
@@ -277,6 +265,65 @@ public class ImageEdit {
         new  ImageEdit();
         }
       });        
+    }
+
+    private JButton createButton(String name, int width, int height, Color color, JToolBar bar) {
+      JButton button = new JButton();
+      URL IconUrl = getClass().getResource("/resources/" + name + ".png");
+      if (IconUrl != null) {
+        ImageIcon Icon = new ImageIcon(IconUrl);
+        button.setIcon(Icon);
+      }
+      button.setPreferredSize(new Dimension(width, height));
+      button.setMaximumSize(new Dimension(width, height));
+      button.setBorder(new LineBorder(color));
+      bar.add(button);
+      return button;
+    }
+
+    private JTextArea createTextArea(int width, int height, JToolBar bar) {
+      JTextArea textArea = new JTextArea();
+      textArea.setEditable(false);
+      textArea.setBackground(Color.white);
+      textArea.setBorder(new LineBorder(Color.black));
+      textArea.setPreferredSize(new Dimension(width, height));
+      textArea.setMaximumSize(new Dimension(width, height));
+      bar.add(textArea);
+      return textArea;
+    }
+
+    private JButton createAlphabet(int index, JScrollPane bar) {
+      JButton button = new JButton(String.valueOf(index));
+      URL IconUrl = getClass().getResource("/resources/" + names[index] + "White.png");
+      if (IconUrl != null) {
+        ImageIcon Icon = new ImageIcon(IconUrl);
+        button.setIcon(Icon);
+      }
+      button.setPreferredSize(new Dimension(180, 180));
+      button.setMaximumSize(new Dimension(180, 180));
+      button.setBorder(new LineBorder(Color.black));
+      bar.add(button);
+      button.addActionListener(new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            if(priority[index] != -1){
+              URL IconUrlAl = getClass().getResource("/resources/" + names[index] + "Black.png");
+              if (IconUrlAl != null) {
+              ImageIcon IconAl = new ImageIcon(IconUrlAl);
+              button.setIcon(IconAl);
+              }
+              priority[index] = -1;
+            } else{
+              URL IconUrlAl = getClass().getResource("/resources/" + names[index] + "White.png");
+              if (IconUrlAl != null) {
+              ImageIcon IconAl = new ImageIcon(IconUrlAl);
+              button.setIcon(IconAl);
+              }
+              priority[index] = 0;
+            }
+        }
+      });
+      return button;
     }
 
     private BufferedImage deepCopy(BufferedImage image) {
@@ -327,7 +374,7 @@ public class ImageEdit {
       }
     }
 
-    public class CalligraphicStroke extends BasicStroke { //Адекватный класс
+    public class CalligraphicStroke extends BasicStroke { //Кисть
       private float size;
   
       public CalligraphicStroke(float size) {
@@ -344,56 +391,5 @@ public class ImageEdit {
           return path;
       }
   }
-
-  //Хтонический ужас
-  /*public class CalligraphicStroke implements Stroke {
-    private final float diameter;
-    private final float angle;
-
-    public CalligraphicStroke(float diameter, float angle) {
-        this.diameter = diameter;
-        this.angle = angle;
-    }
-
-    public Shape createStrokedShape(Shape shape) {
-        GeneralPath result = new GeneralPath();
-        PathIterator it = new FlatteningPathIterator(shape.getPathIterator(null), 1);
-        float[] coords = new float[6];
-        float prevTanAngle = 0;
-
-        while (!it.isDone()) {
-            int type = it.currentSegment(coords);
-            float x = coords[0];
-            float y = coords[1];
-
-            if (type != PathIterator.SEG_CLOSE) {
-                float tanAngle = (float) Math.atan2(coords[3] - coords[1], coords[2] - coords[0]);
-                float angle1 = tanAngle + prevTanAngle - angle;
-                float angle2 = tanAngle + prevTanAngle + angle;
-                float cos1 = (float) Math.cos(angle1);
-                float sin1 = (float) Math.sin(angle1);
-                float cos2 = (float) Math.cos(angle2);
-                float sin2 = (float) Math.sin(angle2);
-                float x1 = x + diameter * cos1;
-                float y1 = y + diameter * sin1;
-                float x2 = x + diameter * cos2;
-                float y2 = y + diameter * sin2;
-                float controlX = x + diameter * (float) Math.cos(tanAngle);
-                float controlY = y + diameter * (float) Math.sin(tanAngle);
-
-                if (type == PathIterator.SEG_MOVETO) {
-                    result.moveTo(x1, y1);
-                } else {
-                    result.curveTo(x1, y1, controlX, controlY, x2, y2);
-                }
-            }
-
-            prevTanAngle = (type == PathIterator.SEG_CLOSE) ? 0 : (float) Math.atan2(coords[coords.length - 1] - coords[1], coords[coords.length - 2] - coords[0]);
-            it.next();
-        }
-
-        return result;
-    }
-}*/
      
 }
