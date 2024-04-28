@@ -193,9 +193,9 @@ public class ImageEdit {
         pushresult.addActionListener(new  ActionListener()
           {
             public void actionPerformed(ActionEvent event) {
-              //String processedPixels = ImageProcessor.processImage(imag);
-              //outputTextArea.setText(null);
-              //outputTextArea.append(processedPixels);
+              String processedPixels = ImageProcessor.processImage(imag);
+              outputTextArea.setText(null);
+              outputTextArea.append(processedPixels);
 
               clearImage();
               history.clear();
