@@ -19,6 +19,7 @@ public class ImageEdit {
     boolean mouseClicked = false;
     String[] names = new String[92];
     int[] priority = new int[92];
+    JButton[] buttons = new JButton[92];
     
     Color maincolor;
     MyFrame f;
@@ -77,21 +78,24 @@ public class ImageEdit {
         toolbar.setBackground(Color.gray);
         f.add(toolbar);
 
-        JToolBar symbolChoice = new JToolBar("Toolbar", JToolBar.HORIZONTAL);
-        symbolChoice.setBounds(300, 5, 1500, 1500);
-        symbolChoice.setBorderPainted(false);
-        symbolChoice.setFloatable(false);
-        symbolChoice.setBackground(Color.gray);
-        symbolChoice.setVisible(false);
-        
+        JToolBar allSymbols = new JToolBar("AllSymbols", JToolBar.HORIZONTAL);
+        allSymbols.setLayout(new GridLayout(2, 2));
+        allSymbols.setBounds(300, 5, 1440, 120);
+        allSymbols.setBorderPainted(false);
+        allSymbols.setFloatable(false);
+        allSymbols.setBackground(Color.gray);
+        allSymbols.setVisible(false);
+        f.add(allSymbols);
 
+        JPanel symbolChoice = new JPanel();
+        symbolChoice.setLayout(new GridLayout(0, 6));
+        symbolChoice.setBounds(300, 125, 1440, 960);
+        symbolChoice.setBackground(Color.gray);
         JScrollPane symbolPane = new JScrollPane(symbolChoice);
         symbolPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-        for (int i = 0; i < 92; i++) {
-          JButton button = createAlphabet(i, symbolPane);
-        }
+        symbolPane.setBounds(300, 125, 1440, 960);
+        symbolPane.setVisible(false);
         f.add(symbolPane);
-        
 
         //menu
         JButton training = createButton("training", 300, 70, Color.black, menu);
@@ -108,6 +112,14 @@ public class ImageEdit {
         //statisticTextArea.setForeground(Color.BLUE);
         JButton resetStatistic = createButton("resetStatistic", 60, 60, Color.black, toolbar);
         //symbolPane
+        JButton addHiragana = createButton("add", 720, 60, Color.black, allSymbols);
+        JButton deleteHiragana = createButton("delete", 720, 60, Color.black, allSymbols);
+        JButton addKatakana = createButton("add", 720, 60, Color.black, allSymbols);
+        JButton deleteKatakana = createButton("delete", 720, 60, Color.black, allSymbols);
+
+        for (int i = 0; i < 92; i++) {
+          buttons[i] = createMassButtons(i, symbolChoice);
+        }
 
 
         f.setLayout(null);
@@ -120,7 +132,8 @@ public class ImageEdit {
               taskWindow.setVisible(true);
               toolbar.setVisible(true);
               japan.setVisible(true);
-              symbolChoice.setVisible(false);
+              symbolPane.setVisible(false);
+              allSymbols.setVisible(false);
             }
           });
 
@@ -130,7 +143,8 @@ public class ImageEdit {
               taskWindow.setVisible(true);
               toolbar.setVisible(true);
               japan.setVisible(true);
-              symbolChoice.setVisible(false);
+              symbolPane.setVisible(false);
+              allSymbols.setVisible(false);
             }
           });
 
@@ -140,7 +154,8 @@ public class ImageEdit {
               taskWindow.setVisible(true);
               toolbar.setVisible(true);
               japan.setVisible(true);
-              symbolChoice.setVisible(false);
+              symbolPane.setVisible(false);
+              allSymbols.setVisible(false);
             }
           });
 
@@ -150,7 +165,8 @@ public class ImageEdit {
               taskWindow.setVisible(false);
               toolbar.setVisible(false);
               japan.setVisible(false);
-              symbolChoice.setVisible(true);
+              symbolPane.setVisible(true);
+              allSymbols.setVisible(true);
             }
           });
 
@@ -243,7 +259,7 @@ public class ImageEdit {
             }
           });
                   
-        f.addComponentListener(new  ComponentAdapter() 
+        f.addComponentListener(new  ComponentAdapter() //размер окна
           {
             public void componentResized(java.awt.event.ComponentEvent evt) {
               japan.setSize(f.getWidth(), f.getHeight()-80);
@@ -277,7 +293,7 @@ public class ImageEdit {
       button.setPreferredSize(new Dimension(width, height));
       button.setMaximumSize(new Dimension(width, height));
       button.setBorder(new LineBorder(color));
-      bar.add(button);
+      bar.add(button); 
       return button;
     }
 
@@ -292,33 +308,25 @@ public class ImageEdit {
       return textArea;
     }
 
-    private JButton createAlphabet(int index, JScrollPane bar) {
+    private JButton createMassButtons(int index, JPanel bar) {
       JButton button = new JButton(String.valueOf(index));
-      URL IconUrl = getClass().getResource(names[index] + "White.png");
+      URL IconUrl = getClass().getResource(names[index] + ".png");
       if (IconUrl != null) {
         ImageIcon Icon = new ImageIcon(IconUrl);
         button.setIcon(Icon);
       }
-      button.setPreferredSize(new Dimension(180, 180));
-      button.setMaximumSize(new Dimension(180, 180));
+      button.setPreferredSize(new Dimension(240, 240));
+      button.setMaximumSize(new Dimension(240, 240));
       button.setBorder(new LineBorder(Color.black));
       bar.add(button);
       button.addActionListener(new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
             if(priority[index] != -1){
-              URL IconUrlAl = getClass().getResource(names[index] + "Black.png");
-              if (IconUrlAl != null) {
-              ImageIcon IconAl = new ImageIcon(IconUrlAl);
-              button.setIcon(IconAl);
-              }
+              
               priority[index] = -1;
             } else{
-              URL IconUrlAl = getClass().getResource(names[index] + "White.png");
-              if (IconUrlAl != null) {
-              ImageIcon IconAl = new ImageIcon(IconUrlAl);
-              button.setIcon(IconAl);
-              }
+              
               priority[index] = 0;
             }
         }
