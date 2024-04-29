@@ -28,7 +28,7 @@ public class ImageEdit {
 
     public ImageEdit() {
 
-        String fileName = "src/resources/alphabet.txt";
+        String fileName = "src/main/resources/alphabet.txt";
         try(BufferedReader reader = new BufferedReader(new FileReader(fileName))){
           String line;
           int index = 0;
@@ -193,7 +193,7 @@ public class ImageEdit {
         pushresult.addActionListener(new  ActionListener()
           {
             public void actionPerformed(ActionEvent event) {
-              String processedPixels = ImageProcessor.processImage(imag);
+              String processedPixels = NeuroBridge.recognizeSymbol(imag,false);
               outputTextArea.setText(null);
               outputTextArea.append(processedPixels);
 
@@ -269,7 +269,7 @@ public class ImageEdit {
 
     private JButton createButton(String name, int width, int height, Color color, JToolBar bar) {
       JButton button = new JButton();
-      URL IconUrl = getClass().getResource("/resources/" + name + ".png");
+      URL IconUrl = getClass().getResource(name + ".png");
       if (IconUrl != null) {
         ImageIcon Icon = new ImageIcon(IconUrl);
         button.setIcon(Icon);
@@ -294,7 +294,7 @@ public class ImageEdit {
 
     private JButton createAlphabet(int index, JScrollPane bar) {
       JButton button = new JButton(String.valueOf(index));
-      URL IconUrl = getClass().getResource("/resources/" + names[index] + "White.png");
+      URL IconUrl = getClass().getResource(names[index] + "White.png");
       if (IconUrl != null) {
         ImageIcon Icon = new ImageIcon(IconUrl);
         button.setIcon(Icon);
@@ -307,14 +307,14 @@ public class ImageEdit {
         @Override
         public void actionPerformed(ActionEvent e) {
             if(priority[index] != -1){
-              URL IconUrlAl = getClass().getResource("/resources/" + names[index] + "Black.png");
+              URL IconUrlAl = getClass().getResource(names[index] + "Black.png");
               if (IconUrlAl != null) {
               ImageIcon IconAl = new ImageIcon(IconUrlAl);
               button.setIcon(IconAl);
               }
               priority[index] = -1;
             } else{
-              URL IconUrlAl = getClass().getResource("/resources/" + names[index] + "White.png");
+              URL IconUrlAl = getClass().getResource(names[index] + "White.png");
               if (IconUrlAl != null) {
               ImageIcon IconAl = new ImageIcon(IconUrlAl);
               button.setIcon(IconAl);
