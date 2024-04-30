@@ -52,7 +52,7 @@ public class ImageEdit {
         maincolor = Color.black;
          
         japan = new  MyPanel();
-        japan.setBounds(300,130,350,350);
+        japan.setBounds(300, 130, 350, 350);
         japan.setBackground(Color.white);
         japan.setOpaque(true);
         f.add(japan);
@@ -78,24 +78,43 @@ public class ImageEdit {
         toolbar.setBackground(Color.gray);
         f.add(toolbar);
 
-        JToolBar allSymbols = new JToolBar("AllSymbols", JToolBar.HORIZONTAL);
-        allSymbols.setLayout(new GridLayout(2, 2));
-        allSymbols.setBounds(300, 5, 1440, 120);
-        allSymbols.setBorderPainted(false);
-        allSymbols.setFloatable(false);
-        allSymbols.setBackground(Color.gray);
-        allSymbols.setVisible(false);
-        f.add(allSymbols);
+        JToolBar hiraganaSymbols = new JToolBar("hiraganaSymbols", JToolBar.HORIZONTAL);
+        hiraganaSymbols.setLayout(new GridLayout(1, 2));
+        hiraganaSymbols.setBounds(300, 5, 1600, 60);
+        hiraganaSymbols.setBorderPainted(false);
+        hiraganaSymbols.setFloatable(false);
+        hiraganaSymbols.setBackground(Color.gray);
+        hiraganaSymbols.setVisible(false);
+        f.add(hiraganaSymbols);
 
-        JPanel symbolChoice = new JPanel();
-        symbolChoice.setLayout(new GridLayout(0, 6));
-        symbolChoice.setBounds(300, 125, 1440, 960);
-        symbolChoice.setBackground(Color.gray);
-        JScrollPane symbolPane = new JScrollPane(symbolChoice);
-        symbolPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-        symbolPane.setBounds(300, 125, 1440, 960);
-        symbolPane.setVisible(false);
-        f.add(symbolPane);
+        JPanel hiraganaChoice = new JPanel();
+        hiraganaChoice.setLayout(new GridLayout(0, 8));
+        hiraganaChoice.setBounds(300, 65, 1600, 400);
+        hiraganaChoice.setBackground(Color.gray);
+        JScrollPane hiraganaPane = new JScrollPane(hiraganaChoice);
+        hiraganaPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        hiraganaPane.setBounds(300, 65, 1600, 400);
+        hiraganaPane.setVisible(false);
+        f.add(hiraganaPane);
+
+        JToolBar katakanaSymbols = new JToolBar("katakanaSymbols", JToolBar.HORIZONTAL);
+        katakanaSymbols.setLayout(new GridLayout(1, 2));
+        katakanaSymbols.setBounds(300, 480, 1600, 60);
+        katakanaSymbols.setBorderPainted(false);
+        katakanaSymbols.setFloatable(false);
+        katakanaSymbols.setBackground(Color.gray);
+        katakanaSymbols.setVisible(false);
+        f.add(katakanaSymbols);
+
+        JPanel katakanaChoice = new JPanel();
+        katakanaChoice.setLayout(new GridLayout(0, 8));
+        katakanaChoice.setBounds(300, 540, 1600, 400);
+        katakanaChoice.setBackground(Color.gray);
+        JScrollPane katakanaPane = new JScrollPane(katakanaChoice);
+        katakanaPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        katakanaPane.setBounds(300, 540, 1600, 400);
+        katakanaPane.setVisible(false);
+        f.add(katakanaPane);
 
         //menu
         JButton training = createButton("training", 300, 70, Color.black, menu);
@@ -111,14 +130,14 @@ public class ImageEdit {
         JTextArea statisticTextArea = createTextArea(90, 60, toolbar);
         //statisticTextArea.setForeground(Color.BLUE);
         JButton resetStatistic = createButton("resetStatistic", 60, 60, Color.black, toolbar);
-        //symbolPane
-        JButton addHiragana = createButton("add", 720, 60, Color.black, allSymbols);
-        JButton deleteHiragana = createButton("delete", 720, 60, Color.black, allSymbols);
-        JButton addKatakana = createButton("add", 720, 60, Color.black, allSymbols);
-        JButton deleteKatakana = createButton("delete", 720, 60, Color.black, allSymbols);
-
-        for (int i = 0; i < 92; i++) {
-          buttons[i] = createMassButtons(i, symbolChoice);
+        //hieroglyphsPanes
+        JButton addHiragana = createButton("addHiragana", 800, 60, Color.black, hiraganaSymbols);
+        JButton deleteHiragana = createButton("deleteHiragana", 800, 60, Color.black, hiraganaSymbols);
+        JButton addKatakana = createButton("addKatakana", 800, 60, Color.black, katakanaSymbols);
+        JButton deleteKatakana = createButton("deleteKatakana", 800, 60, Color.black, katakanaSymbols);
+        for (int i = 0; i < 46; i++) {
+          buttons[i] = createMassButtons(names[i], i, hiraganaChoice);
+          buttons[i + 46] = createMassButtons(names[i + 46] + "K", i + 46, katakanaChoice);
         }
 
 
@@ -132,8 +151,10 @@ public class ImageEdit {
               taskWindow.setVisible(true);
               toolbar.setVisible(true);
               japan.setVisible(true);
-              symbolPane.setVisible(false);
-              allSymbols.setVisible(false);
+              hiraganaPane.setVisible(false);
+              hiraganaSymbols.setVisible(false);
+              katakanaPane.setVisible(false);
+              katakanaSymbols.setVisible(false);
             }
           });
 
@@ -143,8 +164,10 @@ public class ImageEdit {
               taskWindow.setVisible(true);
               toolbar.setVisible(true);
               japan.setVisible(true);
-              symbolPane.setVisible(false);
-              allSymbols.setVisible(false);
+              hiraganaPane.setVisible(false);
+              hiraganaSymbols.setVisible(false);
+              katakanaPane.setVisible(false);
+              katakanaSymbols.setVisible(false);
             }
           });
 
@@ -154,8 +177,10 @@ public class ImageEdit {
               taskWindow.setVisible(true);
               toolbar.setVisible(true);
               japan.setVisible(true);
-              symbolPane.setVisible(false);
-              allSymbols.setVisible(false);
+              hiraganaPane.setVisible(false);
+              hiraganaSymbols.setVisible(false);
+              katakanaPane.setVisible(false);
+              katakanaSymbols.setVisible(false);
             }
           });
 
@@ -165,8 +190,10 @@ public class ImageEdit {
               taskWindow.setVisible(false);
               toolbar.setVisible(false);
               japan.setVisible(false);
-              symbolPane.setVisible(true);
-              allSymbols.setVisible(true);
+              hiraganaPane.setVisible(true);
+              hiraganaSymbols.setVisible(true);
+              katakanaPane.setVisible(true);
+              katakanaSymbols.setVisible(true);
             }
           });
 
@@ -219,6 +246,51 @@ public class ImageEdit {
     
           });
         
+        //hieroglyphsPanes actions
+        addHiragana.addActionListener(new  ActionListener()
+          {
+            public void actionPerformed(ActionEvent event) { 
+              for(int i = 0; i < 46; i++){
+                if(priority[i] == -1){
+                  buttons[i].doClick();
+                }
+              }
+            }
+          });
+
+        deleteHiragana.addActionListener(new  ActionListener()
+        {
+          public void actionPerformed(ActionEvent event) { 
+            for(int i = 0; i < 46; i++){
+              if(priority[i] != -1){
+                buttons[i].doClick();
+              }
+            }
+          }
+        });
+
+        addKatakana.addActionListener(new  ActionListener()
+          {
+            public void actionPerformed(ActionEvent event) { 
+              for(int i = 46; i < 92; i++){
+                if(priority[i] == -1){
+                  buttons[i].doClick();
+                }
+              }
+            }
+          });
+
+        deleteKatakana.addActionListener(new  ActionListener()
+        {
+          public void actionPerformed(ActionEvent event) { 
+            for(int i = 46; i < 92; i++){
+              if(priority[i] != -1){
+                buttons[i].doClick();
+              }
+            }
+          }
+        });
+        
         //canvas actions
         japan.addMouseMotionListener(new  MouseMotionAdapter()
           {
@@ -258,8 +330,9 @@ public class ImageEdit {
               }
             }
           });
-                  
-        f.addComponentListener(new  ComponentAdapter() //размер окна
+        
+        //размер окна
+        f.addComponentListener(new  ComponentAdapter()
           {
             public void componentResized(java.awt.event.ComponentEvent evt) {
               japan.setSize(f.getWidth(), f.getHeight()-80);
@@ -284,7 +357,7 @@ public class ImageEdit {
     }
 
     private JButton createButton(String name, int width, int height, Color color, JToolBar bar) {
-      JButton button = new JButton();
+      JButton button = new JButton(name);
       URL IconUrl = getClass().getResource(name + ".png");
       if (IconUrl != null) {
         ImageIcon Icon = new ImageIcon(IconUrl);
@@ -308,25 +381,32 @@ public class ImageEdit {
       return textArea;
     }
 
-    private JButton createMassButtons(int index, JPanel bar) {
-      JButton button = new JButton(String.valueOf(index));
-      URL IconUrl = getClass().getResource(names[index] + ".png");
+    private JButton createMassButtons(String name, int index, JPanel bar) {
+      JButton button = new JButton(name);
+      URL IconUrl = getClass().getResource("/alphabet/" + name + ".png");
       if (IconUrl != null) {
         ImageIcon Icon = new ImageIcon(IconUrl);
         button.setIcon(Icon);
       }
-      button.setPreferredSize(new Dimension(240, 240));
-      button.setMaximumSize(new Dimension(240, 240));
+      button.setPreferredSize(new Dimension(200, 200));
+      button.setMaximumSize(new Dimension(200, 200));
       button.setBorder(new LineBorder(Color.black));
       bar.add(button);
       button.addActionListener(new ActionListener() {
-        @Override
         public void actionPerformed(ActionEvent e) {
+          URL IconUrl = getClass().getResource("/alphabet/" + name + ".png");
+          URL IconBUrl = getClass().getResource("/alphabet/" + name + "B.png");
             if(priority[index] != -1){
-              
+              if (IconBUrl != null) {
+                ImageIcon Icon = new ImageIcon(IconBUrl);
+                button.setIcon(Icon);
+              }
               priority[index] = -1;
             } else{
-              
+              if (IconUrl != null) {
+                ImageIcon Icon = new ImageIcon(IconUrl);
+                button.setIcon(Icon);
+              }
               priority[index] = 0;
             }
         }
