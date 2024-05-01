@@ -48,7 +48,7 @@ public class ImageEdit {
         f = new MyFrame("MLJapanese");
         f.setSize(1000,700);
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        f.getContentPane().setBackground(Color.gray);
+        f.getContentPane().setBackground(Color.LIGHT_GRAY);
         maincolor = Color.black;
          
         japan = new  MyPanel();
@@ -57,64 +57,17 @@ public class ImageEdit {
         japan.setOpaque(true);
         f.add(japan);
 
-        JToolBar menu = new  JToolBar("Menu", JToolBar.VERTICAL);
-        menu.setBounds(0, 0, 300, 1000);
-        menu.setBorderPainted(false);
-        menu.setFloatable(false);
-        menu.setBackground(Color.gray);
-        f.add(menu);
-
-        JToolBar taskWindow = new  JToolBar("TaskWindow", JToolBar.HORIZONTAL);
-        taskWindow.setBounds(300, 5, 1500, 60);
-        taskWindow.setBorderPainted(false);
-        taskWindow.setFloatable(false);
-        taskWindow.setBackground(Color.gray);
-        f.add(taskWindow);
-
-        JToolBar toolbar = new JToolBar("Toolbar", JToolBar.HORIZONTAL);
-        toolbar.setBounds(300, 65, 1500, 60);
-        toolbar.setBorderPainted(false);
-        toolbar.setFloatable(false);
-        toolbar.setBackground(Color.gray);
-        f.add(toolbar);
-
-        JToolBar hiraganaSymbols = new JToolBar("hiraganaSymbols", JToolBar.HORIZONTAL);
+        JToolBar menu = createToolbar("Menu", JToolBar.VERTICAL, 0, 0, 300, 1000, Color.LIGHT_GRAY);
+        JToolBar taskWindow = createToolbar("TaskWindow", JToolBar.HORIZONTAL, 305, 5, 1500, 60, Color.LIGHT_GRAY);
+        JToolBar toolbar = createToolbar("ToolBar", JToolBar.HORIZONTAL, 305, 65, 1500, 60, Color.LIGHT_GRAY);
+        JToolBar hiraganaSymbols = createToolbar("HiraganaSymbols", JToolBar.HORIZONTAL, 305, 5, 1600, 60, Color.LIGHT_GRAY);
         hiraganaSymbols.setLayout(new GridLayout(1, 2));
-        hiraganaSymbols.setBounds(300, 5, 1600, 60);
-        hiraganaSymbols.setBorderPainted(false);
-        hiraganaSymbols.setFloatable(false);
-        hiraganaSymbols.setBackground(Color.gray);
         hiraganaSymbols.setVisible(false);
-        f.add(hiraganaSymbols);
-
-        JPanel hiraganaChoice = new JPanel();
-        hiraganaChoice.setLayout(new GridLayout(0, 8));
-        hiraganaChoice.setBounds(300, 65, 1600, 400);
-        hiraganaChoice.setBackground(Color.gray);
-        JScrollPane hiraganaPane = new JScrollPane(hiraganaChoice);
-        hiraganaPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-        hiraganaPane.setBounds(300, 65, 1600, 400);
-        hiraganaPane.setVisible(false);
-        f.add(hiraganaPane);
-
-        JToolBar katakanaSymbols = new JToolBar("katakanaSymbols", JToolBar.HORIZONTAL);
+        JToolBar katakanaSymbols = createToolbar("KatakanaSymbols", JToolBar.HORIZONTAL, 305, 480, 1600, 60, Color.LIGHT_GRAY);
         katakanaSymbols.setLayout(new GridLayout(1, 2));
-        katakanaSymbols.setBounds(300, 480, 1600, 60);
-        katakanaSymbols.setBorderPainted(false);
-        katakanaSymbols.setFloatable(false);
-        katakanaSymbols.setBackground(Color.gray);
         katakanaSymbols.setVisible(false);
-        f.add(katakanaSymbols);
-
-        JPanel katakanaChoice = new JPanel();
-        katakanaChoice.setLayout(new GridLayout(0, 8));
-        katakanaChoice.setBounds(300, 540, 1600, 400);
-        katakanaChoice.setBackground(Color.gray);
-        JScrollPane katakanaPane = new JScrollPane(katakanaChoice);
-        katakanaPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-        katakanaPane.setBounds(300, 540, 1600, 400);
-        katakanaPane.setVisible(false);
-        f.add(katakanaPane);
+        JScrollPane hiraganaPane = createPane(305, 65, 1600, 400);
+        JScrollPane katakanaPane = createPane(305, 540, 1600, 400);
 
         //menu
         JButton training = createButton("training", 300, 70, Color.black, menu);
@@ -136,8 +89,8 @@ public class ImageEdit {
         JButton addKatakana = createButton("addKatakana", 800, 60, Color.black, katakanaSymbols);
         JButton deleteKatakana = createButton("deleteKatakana", 800, 60, Color.black, katakanaSymbols);
         for (int i = 0; i < 46; i++) {
-          buttons[i] = createMassButtons(names[i], i, hiraganaChoice);
-          buttons[i + 46] = createMassButtons(names[i + 46] + "K", i + 46, katakanaChoice);
+          buttons[i] = createMassButtons(names[i], i, (JPanel)hiraganaPane.getViewport().getView());
+          buttons[i + 46] = createMassButtons(names[i + 46] + "K", i + 46, (JPanel)katakanaPane.getViewport().getView());
         }
 
 
@@ -356,6 +309,29 @@ public class ImageEdit {
       });        
     }
 
+    private JToolBar createToolbar(String name, int orientation, int x, int y, int width, int height, Color color) {
+      JToolBar toolbar = new  JToolBar(name, orientation);
+      toolbar.setBounds(x, y, width, height);
+      toolbar.setBorderPainted(false);
+      toolbar.setFloatable(false);
+      toolbar.setBackground(color);
+      f.add(toolbar);
+      return toolbar;
+    }
+
+    private JScrollPane createPane(int x, int y, int width, int height) {
+      JPanel panel = new JPanel();
+      panel.setLayout(new GridLayout(0, 8));
+      panel.setBounds(x, y ,width, height);
+      panel.setBackground(Color.LIGHT_GRAY);
+      JScrollPane pane = new JScrollPane(panel);
+      pane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+      pane.setBounds(x, y ,width, height);
+      pane.setVisible(false);
+      f.add(pane);
+      return pane;
+    }
+
     private JButton createButton(String name, int width, int height, Color color, JToolBar bar) {
       JButton button = new JButton(name);
       URL IconUrl = getClass().getResource(name + ".png");
@@ -383,32 +359,22 @@ public class ImageEdit {
 
     private JButton createMassButtons(String name, int index, JPanel bar) {
       JButton button = new JButton(name);
-      URL IconUrl = getClass().getResource("/alphabet/" + name + ".png");
-      if (IconUrl != null) {
-        ImageIcon Icon = new ImageIcon(IconUrl);
-        button.setIcon(Icon);
-      }
+      setIcon(name, button);
       button.setPreferredSize(new Dimension(200, 200));
       button.setMaximumSize(new Dimension(200, 200));
       button.setBorder(new LineBorder(Color.black));
+      button.setHorizontalAlignment(SwingConstants.LEFT);
+      button.setVerticalAlignment(SwingConstants.BOTTOM);
       bar.add(button);
       button.addActionListener(new ActionListener() {
         public void actionPerformed(ActionEvent e) {
-          URL IconUrl = getClass().getResource("/alphabet/" + name + ".png");
-          URL IconBUrl = getClass().getResource("/alphabet/" + name + "B.png");
-            if(priority[index] != -1){
-              if (IconBUrl != null) {
-                ImageIcon Icon = new ImageIcon(IconBUrl);
-                button.setIcon(Icon);
-              }
-              priority[index] = -1;
-            } else{
-              if (IconUrl != null) {
-                ImageIcon Icon = new ImageIcon(IconUrl);
-                button.setIcon(Icon);
-              }
-              priority[index] = 0;
-            }
+          if(priority[index] != -1){
+            setIcon(name + "B", button);
+            priority[index] = -1;
+          } else{
+            setIcon(name, button);
+            priority[index] = 0;
+          }
         }
       });
       return button;
@@ -432,6 +398,14 @@ public class ImageEdit {
       g2.fillRect(0, 0, imag.getWidth(), imag.getHeight());
       g2.dispose();
       japan.repaint();
+    }
+
+    private void setIcon(String name, JButton button) {
+      URL IconUrl = getClass().getResource("/alphabet/" + name + ".png");
+      if (IconUrl != null) {
+        ImageIcon Icon = new ImageIcon(IconUrl);
+        button.setIcon(Icon);
+        }
     }
   
     class MyFrame extends JFrame {
