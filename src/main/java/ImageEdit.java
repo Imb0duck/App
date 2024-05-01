@@ -5,27 +5,26 @@ import  javax.swing.*;
 import  java.awt.image.*;
 import  java.util.*;
 import  java.net.URL;
-import javax.swing.border.LineBorder;
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import  javax.swing.border.LineBorder;
+import  java.io.BufferedReader;
+import  java.io.FileReader;
+import  java.io.IOException;
 
 
 public class ImageEdit {
-    int xPad;
-    int yPad;
-    int rightAnswers = 0;
-    int allAnswers = 0;
-    boolean mouseClicked = false;
-    String[] names = new String[92];
-    int[] priority = new int[92];
-    JButton[] buttons = new JButton[92];
-    
-    Color maincolor;
-    MyFrame f;
-    MyPanel japan;
-    BufferedImage imag;
-    Stack<BufferedImage> history = new Stack<>();
+    private int xPad;
+    private int yPad;
+    private int rightAnswers = 0;
+    private int allAnswers = 0;
+    private boolean mouseClicked = false;
+    private String[] names = new String[92];
+    private int[] priority = new int[92];
+    private JButton[] buttons = new JButton[92];
+    private Color maincolor;
+    private MyFrame f;
+    private MyPanel japan;
+    private BufferedImage imag;
+    private Stack<BufferedImage> history = new Stack<>();
 
     public ImageEdit() {
 
@@ -49,13 +48,12 @@ public class ImageEdit {
         f.setSize(1000,700);
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         f.getContentPane().setBackground(Color.LIGHT_GRAY);
-        maincolor = Color.black;
-         
         japan = new  MyPanel();
         japan.setBounds(300, 130, 350, 350);
         japan.setBackground(Color.white);
         japan.setOpaque(true);
         f.add(japan);
+        maincolor = Color.black;
 
         JToolBar menu = createToolbar("Menu", JToolBar.VERTICAL, 0, 0, 300, 1000, Color.LIGHT_GRAY);
         JToolBar taskWindow = createToolbar("TaskWindow", JToolBar.HORIZONTAL, 305, 5, 1500, 60, Color.LIGHT_GRAY);
@@ -92,7 +90,6 @@ public class ImageEdit {
           buttons[i] = createMassButtons(names[i], i, (JPanel)hiraganaPane.getViewport().getView());
           buttons[i + 46] = createMassButtons(names[i + 46] + "K", i + 46, (JPanel)katakanaPane.getViewport().getView());
         }
-
 
         f.setLayout(null);
         f.setVisible(true);
@@ -154,12 +151,44 @@ public class ImageEdit {
           {
             public void actionPerformed(ActionEvent event) { 
               if (maincolor == Color.black) {
+                f.getContentPane().setBackground(Color.DARK_GRAY);
+                menu.setBackground(Color.DARK_GRAY);
+                taskWindow.setBackground(Color.DARK_GRAY);
+                toolbar.setBackground(Color.DARK_GRAY);
+                hiraganaSymbols.setBackground(Color.DARK_GRAY);
+                katakanaSymbols.setBackground(Color.DARK_GRAY);
+                for(int i = 0; i < 46; i++){
+                  setThisIcon(names[i] + "B", buttons[i]);
+                  if(priority[i] == -1) {
+                    buttons[i].setIcon(createTransparentIcon(buttons[i].getIcon()));
+                  }
+                  setThisIcon(names[i + 46] + "KB", buttons[i + 46]);
+                  if(priority[i + 46] == -1) {
+                    buttons[i + 46].setIcon(createTransparentIcon(buttons[i + 46].getIcon()));
+                  }
+                }
                 maincolor = Color.white;
                 clearImage();
                 japan.setBackground(Color.white);
                 history.clear();
               }
               else {
+                f.getContentPane().setBackground(Color.LIGHT_GRAY);
+                menu.setBackground(Color.LIGHT_GRAY);
+                taskWindow.setBackground(Color.LIGHT_GRAY);
+                toolbar.setBackground(Color.LIGHT_GRAY);
+                hiraganaSymbols.setBackground(Color.LIGHT_GRAY);
+                katakanaSymbols.setBackground(Color.LIGHT_GRAY);
+                for(int i = 0; i < 46; i++){
+                  setThisIcon(names[i], buttons[i]);
+                  if(priority[i] == -1) {
+                    buttons[i].setIcon(createTransparentIcon(buttons[i].getIcon()));
+                  }
+                  setThisIcon(names[i + 46] + "K", buttons[i + 46]);
+                  if(priority[i + 46] == -1) {
+                    buttons[i + 46].setIcon(createTransparentIcon(buttons[i + 46].getIcon()));
+                  }
+                }
                 maincolor = Color.black;
                 clearImage();
                 japan.setBackground(Color.white);
@@ -205,7 +234,12 @@ public class ImageEdit {
             public void actionPerformed(ActionEvent event) { 
               for(int i = 0; i < 46; i++){
                 if(priority[i] == -1){
-                  buttons[i].doClick();
+                  if(maincolor == Color.black){
+                    setThisIcon(names[i], buttons[i]);
+                  } else{
+                    setThisIcon(names[i] + "B", buttons[i]);
+                  }
+                  priority[i] = 0;
                 }
               }
             }
@@ -216,7 +250,8 @@ public class ImageEdit {
           public void actionPerformed(ActionEvent event) { 
             for(int i = 0; i < 46; i++){
               if(priority[i] != -1){
-                buttons[i].doClick();
+                buttons[i].setIcon(createTransparentIcon(buttons[i].getIcon()));
+                priority[i] = -1;
               }
             }
           }
@@ -227,7 +262,12 @@ public class ImageEdit {
             public void actionPerformed(ActionEvent event) { 
               for(int i = 46; i < 92; i++){
                 if(priority[i] == -1){
-                  buttons[i].doClick();
+                  if(maincolor == Color.black){
+                    setThisIcon(names[i] + "K", buttons[i]);
+                  } else{
+                    setThisIcon(names[i] + "KB", buttons[i]);
+                  }
+                  priority[i] = 0;
                 }
               }
             }
@@ -238,7 +278,8 @@ public class ImageEdit {
           public void actionPerformed(ActionEvent event) { 
             for(int i = 46; i < 92; i++){
               if(priority[i] != -1){
-                buttons[i].doClick();
+                buttons[i].setIcon(createTransparentIcon(buttons[i].getIcon()));
+                priority[i] = -1;
               }
             }
           }
@@ -284,7 +325,7 @@ public class ImageEdit {
             }
           });
         
-        //размер окна
+        //window resize
         f.addComponentListener(new  ComponentAdapter()
           {
             public void componentResized(java.awt.event.ComponentEvent evt) {
@@ -359,25 +400,49 @@ public class ImageEdit {
 
     private JButton createMassButtons(String name, int index, JPanel bar) {
       JButton button = new JButton(name);
-      setIcon(name, button);
+      setThisIcon(name, button);
       button.setPreferredSize(new Dimension(200, 200));
       button.setMaximumSize(new Dimension(200, 200));
       button.setBorder(new LineBorder(Color.black));
       button.setHorizontalAlignment(SwingConstants.LEFT);
       button.setVerticalAlignment(SwingConstants.BOTTOM);
       bar.add(button);
+
       button.addActionListener(new ActionListener() {
         public void actionPerformed(ActionEvent e) {
           if(priority[index] != -1){
-            setIcon(name + "B", button);
+            button.setIcon(createTransparentIcon(button.getIcon()));
             priority[index] = -1;
           } else{
-            setIcon(name, button);
+            if(maincolor == Color.white) {
+              setThisIcon(name + "B", button);
+            } else{
+              setThisIcon(name, button);
+            }
             priority[index] = 0;
           }
         }
       });
       return button;
+    }
+
+    public static Icon createTransparentIcon(Icon icon) { //get transparent icon
+      
+      BufferedImage image = new BufferedImage(icon.getIconWidth(), icon.getIconHeight(), BufferedImage.TYPE_INT_ARGB);
+      Graphics2D g2d = image.createGraphics();
+      icon.paintIcon(null, g2d, 0, 0);
+      g2d.dispose();
+
+      int width = image.getWidth();
+      int height = image.getHeight();
+      BufferedImage transparentImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+      Graphics2D g2dTransparent = transparentImage.createGraphics();
+      g2dTransparent.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f));
+      g2dTransparent.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+      g2dTransparent.drawImage(image, 0, 0, null);
+      g2dTransparent.dispose();
+
+      return new ImageIcon(transparentImage);
     }
 
     private BufferedImage deepCopy(BufferedImage image) {
@@ -400,7 +465,7 @@ public class ImageEdit {
       japan.repaint();
     }
 
-    private void setIcon(String name, JButton button) {
+    private void setThisIcon(String name, JButton button) {
       URL IconUrl = getClass().getResource("/alphabet/" + name + ".png");
       if (IconUrl != null) {
         ImageIcon Icon = new ImageIcon(IconUrl);
@@ -436,7 +501,7 @@ public class ImageEdit {
       }
     }
 
-    public class CalligraphicStroke extends BasicStroke { //Кисть
+    public class CalligraphicStroke extends BasicStroke { //Brush
       private float size;
   
       public CalligraphicStroke(float size) {
