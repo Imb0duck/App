@@ -14,8 +14,8 @@ su 0
 se 0
 so 0
 ta 0
-chi 0
-tsu 0
+ti 0
+tu 0
 te 0
 to 0
 na 0
@@ -60,8 +60,8 @@ su 0
 se 0
 so 0
 ta 0
-chi 0
-tsu 0
+ti 0
+tu 0
 te 0
 to 0
 na 0
