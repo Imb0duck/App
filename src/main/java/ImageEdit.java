@@ -7,7 +7,9 @@ import  java.util.*;
 import  java.net.URL;
 import  javax.swing.border.LineBorder;
 import  java.io.BufferedReader;
+import java.io.BufferedWriter;
 import  java.io.FileReader;
+import java.io.FileWriter;
 import  java.io.IOException;
 
 
@@ -325,7 +327,7 @@ public class ImageEdit {
             }
           });
         
-        //window resize
+        //frame actions
         f.addComponentListener(new  ComponentAdapter()
           {
             public void componentResized(java.awt.event.ComponentEvent evt) {
@@ -339,6 +341,22 @@ public class ImageEdit {
               japan.repaint();
             }
           });
+
+        f.addWindowListener(new WindowAdapter() {
+          public void windowClosing(WindowEvent e) {
+            if(e.getID() == WindowEvent.WINDOW_CLOSING){
+              try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName))) {
+                writer.write(""); 
+                for (int i = 0; i < 92; i++) {
+                  writer.write(names[i] + ' ' + String.valueOf(priority[i]));
+                  writer.newLine();
+                }
+              } catch (IOException j) {
+                j.printStackTrace();
+              }
+            }
+          }
+        });
     }
 
 
@@ -401,6 +419,9 @@ public class ImageEdit {
     private JButton createMassButtons(String name, int index, JPanel bar) {
       JButton button = new JButton(name);
       setThisIcon(name, button);
+      if(priority[index] == -1){
+        button.setIcon(createTransparentIcon(button.getIcon()));
+      }
       button.setPreferredSize(new Dimension(200, 200));
       button.setMaximumSize(new Dimension(200, 200));
       button.setBorder(new LineBorder(Color.black));
