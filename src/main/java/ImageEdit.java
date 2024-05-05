@@ -18,6 +18,8 @@ public class ImageEdit {
     private int yPad;
     private int rightAnswers = 0;
     private int allAnswers = 0;
+    private int mode = 0;
+    private int chosenNumber;
     private boolean mouseClicked = false;
     private String[] names = new String[92];
     private int[] priority = new int[92];
@@ -71,8 +73,10 @@ public class ImageEdit {
 
         //menu
         JButton training = createButton("training", 300, 70, Color.black, menu);
-        JButton education = createButton("education", 300, 70, Color.black, menu);
         JButton test = createButton("test", 300, 70, Color.black, menu);
+        JButton education = createButton("education", 300, 70, Color.black, menu);
+        JLabel perfectSymbol = createLabel(300, 300, Color.gray, menu);
+        JLabel blankspace = createLabel(300, 300, Color.gray, menu);
         JButton hieroglyphs = createButton("hieroglyphs", 300, 70, Color.black, menu);
         JButton themeColor = createButton("themeColor", 300, 70, Color.black, menu);
         //taskWindow
@@ -103,10 +107,13 @@ public class ImageEdit {
               taskWindow.setVisible(true);
               toolbar.setVisible(true);
               japan.setVisible(true);
+              perfectSymbol.setIcon(null);
               hiraganaPane.setVisible(false);
               hiraganaSymbols.setVisible(false);
               katakanaPane.setVisible(false);
               katakanaSymbols.setVisible(false);
+
+              mode = 2;
             }
           });
 
@@ -120,6 +127,14 @@ public class ImageEdit {
               hiraganaSymbols.setVisible(false);
               katakanaPane.setVisible(false);
               katakanaSymbols.setVisible(false);
+
+              /*chosenNumber = 1; 
+              if(maincolor == Color.black){
+                setLabelImage(names[chosenNumber], perfectSymbol);
+              } else{
+                setLabelImage(names[chosenNumber] + "B", perfectSymbol);
+              }*/
+              mode = 1;
             }
           });
 
@@ -129,10 +144,13 @@ public class ImageEdit {
               taskWindow.setVisible(true);
               toolbar.setVisible(true);
               japan.setVisible(true);
+              perfectSymbol.setIcon(null);
               hiraganaPane.setVisible(false);
               hiraganaSymbols.setVisible(false);
               katakanaPane.setVisible(false);
               katakanaSymbols.setVisible(false);
+
+              mode = 0;
             }
           });
 
@@ -159,6 +177,9 @@ public class ImageEdit {
                 toolbar.setBackground(Color.DARK_GRAY);
                 hiraganaSymbols.setBackground(Color.DARK_GRAY);
                 katakanaSymbols.setBackground(Color.DARK_GRAY);
+                if(mode == 1){
+                  setLabelImage(names[chosenNumber] + "B", perfectSymbol);
+                }
                 for(int i = 0; i < 46; i++){
                   setThisIcon(names[i] + "B", buttons[i]);
                   if(priority[i] == -1) {
@@ -181,6 +202,9 @@ public class ImageEdit {
                 toolbar.setBackground(Color.LIGHT_GRAY);
                 hiraganaSymbols.setBackground(Color.LIGHT_GRAY);
                 katakanaSymbols.setBackground(Color.LIGHT_GRAY);
+                if(mode == 1){
+                  setLabelImage(names[chosenNumber], perfectSymbol);
+                }
                 for(int i = 0; i < 46; i++){
                   setThisIcon(names[i], buttons[i]);
                   if(priority[i] == -1) {
@@ -416,6 +440,15 @@ public class ImageEdit {
       return textArea;
     }
 
+    private JLabel createLabel(int width, int height, Color color, JToolBar bar) {
+      JLabel label = new JLabel("", SwingConstants.CENTER);
+      label.setPreferredSize(new Dimension(width, height));
+      label.setMaximumSize(new Dimension(width, height));
+      label.setBackground(color);
+      bar.add(label);
+      return label;
+    }
+
     private JButton createMassButtons(String name, int index, JPanel bar) {
       JButton button = new JButton(name);
       setThisIcon(name, button);
@@ -491,6 +524,14 @@ public class ImageEdit {
       if (IconUrl != null) {
         ImageIcon Icon = new ImageIcon(IconUrl);
         button.setIcon(Icon);
+        }
+    }
+
+    private void setLabelImage(String name, JLabel label) {
+      URL IconUrl = getClass().getResource("/alphabet/" + name + ".png");
+      if (IconUrl != null) {
+        ImageIcon Icon = new ImageIcon(IconUrl);
+        label.setIcon(Icon);
         }
     }
   
