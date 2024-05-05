@@ -424,6 +424,8 @@ public class ImageEdit {
       }
       button.setPreferredSize(new Dimension(width, height));
       button.setMaximumSize(new Dimension(width, height));
+      button.setHorizontalAlignment(SwingConstants.LEFT);
+      button.setVerticalAlignment(SwingConstants.BOTTOM);
       button.setBorder(new LineBorder(color));
       bar.add(button); 
       return button;
