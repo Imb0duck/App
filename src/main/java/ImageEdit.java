@@ -89,13 +89,19 @@ public class ImageEdit {
         JButton hieroglyphs = createButton("hieroglyphs", 300, 70, Color.black, menu);
         JButton themeColor = createButton("themeColor", 300, 70, Color.black, menu);
         //taskWindow
-        JTextArea outputTextArea = createTextArea(900, 60, taskWindow);  
+        taskWindow.setLayout(new BoxLayout(taskWindow, BoxLayout.X_AXIS));
+        taskWindow.add(Box.createHorizontalGlue());
+        JTextArea outputTextArea = createTextArea(900, 60, taskWindow);
+        taskWindow.add(Box.createHorizontalGlue());
         //toolbar
+        toolbar.setLayout(new BoxLayout(toolbar, BoxLayout.X_AXIS));
         JButton backbutton = createButton("back", 60, 60, Color.black, toolbar);
         JButton pushresult = createButton("pushresult", 60, 60, Color.black, toolbar);
-        JTextArea statisticTextArea = createTextArea(90, 60, toolbar);
-        //statisticTextArea.setForeground(Color.BLUE);
         JButton resetStatistic = createButton("resetStatistic", 60, 60, Color.black, toolbar);
+        JTextArea statisticTextArea = createTextArea(90, 60, toolbar);
+        toolbar.add(Box.createHorizontalGlue());
+        JTextArea timerTextArea = createTextArea(90, 60, toolbar);
+        toolbar.add(Box.createHorizontalGlue());
         //hieroglyphsPanes
         JButton addHiragana = createButton("addHiragana", 300, 60, Color.black, hiraganaSymbols);
         JButton deleteHiragana = createButton("deleteHiragana", 300, 60, Color.black, hiraganaSymbols);
@@ -186,6 +192,12 @@ public class ImageEdit {
                 toolbar.setBackground(Color.DARK_GRAY);
                 hiraganaSymbols.setBackground(Color.DARK_GRAY);
                 katakanaSymbols.setBackground(Color.DARK_GRAY);
+                outputTextArea.setBackground(Color.black);
+                outputTextArea.setForeground(Color.white);
+                statisticTextArea.setBackground(Color.black);
+                statisticTextArea.setForeground(Color.white);
+                timerTextArea.setBackground(Color.black);
+                timerTextArea.setForeground(Color.white);
                 if(mode == 1){
                   setLabelImage(names[chosenNumber] + "B", perfectSymbol);
                 }
@@ -211,6 +223,12 @@ public class ImageEdit {
                 toolbar.setBackground(Color.LIGHT_GRAY);
                 hiraganaSymbols.setBackground(Color.LIGHT_GRAY);
                 katakanaSymbols.setBackground(Color.LIGHT_GRAY);
+                outputTextArea.setBackground(Color.white);
+                outputTextArea.setForeground(Color.black);
+                statisticTextArea.setBackground(Color.white);
+                statisticTextArea.setForeground(Color.black);
+                timerTextArea.setBackground(Color.white);
+                timerTextArea.setForeground(Color.black);
                 if(mode == 1){
                   setLabelImage(names[chosenNumber], perfectSymbol);
                 }
@@ -255,7 +273,11 @@ public class ImageEdit {
             public void actionPerformed(ActionEvent event) {
               String processedPixels = NeuroBridge.recognizeSymbol(imag,false);
               outputTextArea.setText(null);
+              /*if(processedPixels != "Empty imeage"){
+                outputTextArea.append("Строка");
+              }*/
               outputTextArea.append(processedPixels);
+              
 
               clearImage();
               history.clear();
@@ -411,6 +433,12 @@ public class ImageEdit {
       return toolbar;
     }
 
+    private JPanel createPanel(int x, int y, int width, int height){
+      JPanel panel = new JPanel(new GridBagLayout());
+
+      return panel;
+    }
+
     private JScrollPane createPane(int x, int y, int width, int height) {
       JPanel panel = new JPanel();
       panel.setLayout(new GridLayout(0, (contentWidth - 305) / 200));
@@ -447,6 +475,8 @@ public class ImageEdit {
       textArea.setBorder(new LineBorder(Color.black));
       textArea.setPreferredSize(new Dimension(width, height));
       textArea.setMaximumSize(new Dimension(width, height));
+      Font font = new Font("Serif", Font.PLAIN, 40);
+      textArea.setFont(font);
       bar.add(textArea);
       return textArea;
     }
